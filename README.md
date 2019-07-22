@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project is made based on the idea of Octopus.do, but without any commercial purposes.
+
 ## Available Scripts
 
 In the project directory, you can run:
