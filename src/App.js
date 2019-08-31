@@ -1,6 +1,8 @@
 import React from "react";
+// similar to react-redux
+// bindings available for React and Preact
 import TreeNode from "./components/TreeNode";
-import "./App.css";
+
 function App() {
   return (
     <div className="App">
