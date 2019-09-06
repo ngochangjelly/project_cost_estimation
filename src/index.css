@@ -1,0 +1,34 @@
+.main-bg {
+  background-color: #2f7fef;
+}
+.main-border {
+  border-color: #2f7fef;
+}
+.main-border-bottom {
+  border-bottom: 1px solid #2f7fef;
+}
+.min-height {
+  min-height: 5rem;
+}
+.main-text-color {
+  color: #2f7fef;
+}
+.add-sibling {
+  margin-left: 15rem;
+  margin-top: -5rem;
+}
+.add-sibling-btn {
+  opacity: 0;
+}
+.add-sibling-btn:hover {
+  opacity: 1;
+}
+.add-child {
+  margin-bottom: -15rem;
+}
+.add-child-btn {
+  opacity: 0;
+}
+.add-child-btn:hover {
+  opacity: 1;
+}

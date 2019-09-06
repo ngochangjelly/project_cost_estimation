@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import createStore from "./bundles";
-import "./index.scss";
+import "./index.css";
+import configureStore from "./store";
+import { Provider } from "react-redux";
 
 // similar to react-redux
 // bindings available for React and Preact
-import { Provider } from "redux-bundler-react";
-const store = createStore();
+
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={configureStore()}>
     <App />
   </Provider>,
   document.getElementById("root")
