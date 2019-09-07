@@ -15,27 +15,17 @@ export const Cell = props => {
           {name}
         </div>
       </div>
-      {cell.id !== "te83nwko7b" && (
-        <div className="absolute add-sibling">
-          <IoIosAddCircle
-            onClick={e => {
-              props.handleAddSibling();
-            }}
-            className="add-sibling-btn text-3xl main-text-color"
-          />
-        </div>
-      )}
+      <div className="absolute add-sibling">
+        <IoIosAddCircle
+          onClick={e => {
+            props.handleAddSibling(cell);
+          }}
+          className="add-sibling-btn text-3xl main-text-color"
+        />
+      </div>
       <div className="absolute w-56 add-child flex justify-center">
         <IoIosAddCircle
-          onClick={e =>
-            props.handleAddChild({
-              te83nwko7b: {
-                group: "main",
-                id: "ee83nwko7b",
-                name: "second page"
-              }
-            })
-          }
+          onClick={e => props.handleAddChild(cell)}
           className="add-child-btn text-3xl main-text-color"
         />
       </div>

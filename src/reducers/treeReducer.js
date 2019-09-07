@@ -1,3 +1,5 @@
+import * as actionTypes from "../constant";
+
 export function treeReducer(
   state = [
     {
@@ -11,7 +13,9 @@ export function treeReducer(
   action
 ) {
   switch (action.type) {
-    case "ADD_CHILD":
+    case actionTypes.ADD_CHILD:
+      return state.concat(action.cell);
+    case actionTypes.ADD_SIBLING:
       return state.concat(action.cell);
     default:
       return state;

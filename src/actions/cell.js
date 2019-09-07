@@ -1,5 +1,10 @@
-import * as types from "../constant/index";
+import * as actionTypes from "../constant/index";
 export const addChild = cell => ({
-  type: types.ADD_CHILD,
+  type: actionTypes.ADD_CHILD,
+  cell: cell
+});
+
+export const addSibling = cell => ({
+  type: actionTypes.ADD_SIBLING,
   cell: cell
 });
