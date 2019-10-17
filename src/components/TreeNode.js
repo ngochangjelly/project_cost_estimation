@@ -1,8 +1,8 @@
-import React from "react";
-import { Cell } from "./Cell";
-import { connect } from "react-redux";
-import { addChild, addSibling } from "../actions/cell";
-const uuidv4 = require("uuid/v4");
+import React from 'react';
+import { Cell } from './Cell';
+import { connect } from 'react-redux';
+import { addChild, addSibling } from '../actions/cell';
+const uuidv4 = require('uuid/v4');
 
 const TreeNode = props => {
   const { tree } = props;
@@ -12,9 +12,9 @@ const TreeNode = props => {
     const id = uuidv4();
     let newCell = {};
     newCell[`${id}`] = {
-      group: "body",
+      group: 'body',
       id: id,
-      name: "...",
+      name: '...',
       parentId: cell.id
     };
     dispatchAddChild(newCell);
@@ -23,15 +23,15 @@ const TreeNode = props => {
     const id = uuidv4();
     let newCell = {};
     newCell[`${id}`] = {
-      group: "body",
+      group: 'body',
       id: id,
-      name: "...",
+      name: '...',
       parentId: cell.parentId
     };
     tree.map(t => {
       if (t.parentId === newCell.parentId) {
         Object.entries(t).map(tt => {
-          if (tt[0] !== "te83nwko7b") {
+          if (tt[0] !== 'te83nwko7b') {
             if (!tt[1].siblingId) {
               tt[1].siblingId = 0;
             }
@@ -46,7 +46,7 @@ const TreeNode = props => {
     <div className="flex items-center justify-center">
       <div>
         {tree &&
-          tree.map((t, key) =>
+          tree.map(t =>
             Object.entries(t).map((tr, key) => {
               return (
                 <Cell
