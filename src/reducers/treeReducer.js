@@ -14,6 +14,7 @@ export function treeReducer(
 ) {
   switch (action.type) {
     case actionTypes.ADD_CHILD:
+      const { cell } = action;
       return state.concat(action.cell);
     case actionTypes.ADD_SIBLING:
       return state.concat(action.cell);

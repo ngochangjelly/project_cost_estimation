@@ -24,4 +24,4 @@ chrome-user-data
 *.swo
 package-lock.json
 nvm
-
+src/.linaria_cache

@@ -31,10 +31,12 @@ const TreeNode = props => {
     tree.map(t => {
       if (t.parentId === newCell.parentId) {
         Object.entries(t).map(tt => {
-          if (!tt[1].siblingId) {
-            tt[1].siblingId = 0;
+          if (tt[0] !== "te83nwko7b") {
+            if (!tt[1].siblingId) {
+              tt[1].siblingId = 0;
+            }
+            newCell[`${id}`].siblingId = tt[1].siblingId + 1;
           }
-          return (newCell[`${id}`].siblingId = tt[1].siblingId + 1);
         });
       }
     });
@@ -46,9 +48,6 @@ const TreeNode = props => {
         {tree &&
           tree.map((t, key) =>
             Object.entries(t).map((tr, key) => {
-              if (tr.id === "te83nwko7b") {
-                return;
-              }
               return (
                 <Cell
                   key={key}

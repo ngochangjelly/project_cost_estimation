@@ -23,12 +23,3 @@
 .add-sibling-btn:hover {
   opacity: 1;
 }
-.add-child {
-  margin-bottom: -15rem;
-}
-.add-child-btn {
-  opacity: 0;
-}
-.add-child-btn:hover {
-  opacity: 1;
-}

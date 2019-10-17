@@ -2879,6 +2879,13 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.1.0, cosmiconfig@^5.2.0, cosmiconfig@^5.2.1:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
+craco-linaria@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/craco-linaria/-/craco-linaria-1.1.2.tgz#60d26bdc4bafd1801079b1e9852712a1f9bbf71f"
+  integrity sha512-crA0FDvCF3dLkamGr7NOcOrvXy6P6H4KNkctJ+CSSKxS+V5jzut4qwmdnPQda44KVT37xlVy9sKIfkMpBxQ8Yg==
+  dependencies:
+    cosmiconfig "^5.2.1"
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
