@@ -1,16 +1,48 @@
 import * as actionTypes from '../constant';
-import { Tree, Node } from '../constant/tree';
-const initialTree = [
+import { Tree, initTree } from '../constant/tree';
+
+const ChartTree = initTree();
+//add root node to tree
+ChartTree._addNode({
+  group: 'main',
+  id: 'te83nwko7b',
+  name: 'Main page',
+  root: true
+});
+ChartTree._addNode(
   {
-    te83nwko7b: {
-      group: 'main',
-      id: 'te83nwko7b',
-      name: 'Main page',
-      root: true
-    }
-  }
-];
-export function treeReducer(state = initialTree, action) {
+    group: 'body',
+    id: 'te83nwkoaa',
+    name: 'Body'
+  },
+  'te83nwko7b'
+);
+ChartTree._addNode(
+  {
+    group: 'body',
+    id: 'te22nwkoaa',
+    name: 'Body2'
+  },
+  'te83nwkoaa'
+);
+ChartTree._addNode(
+  {
+    group: 'body',
+    id: 'we2a4nwkoaa',
+    name: 'Body3'
+  },
+  'te22nwkoaa'
+);
+ChartTree._addNode(
+  {
+    group: 'body',
+    id: 'we2a4nwkoaa',
+    name: 'Body3'
+  },
+  'te22nwkoaa'
+);
+
+export function treeReducer(state = ChartTree || null, action) {
   switch (action.type) {
     case actionTypes.ADD_CHILD:
       const { cell } = action;

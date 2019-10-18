@@ -1,4 +1,4 @@
-class Tree {
+export class Tree {
   constructor(root) {
     this._root = root || null;
   }
@@ -26,7 +26,7 @@ class Tree {
     }
 
     this._traverse(node => {
-      if (node.value === parentValue) {
+      if (node.value.id === parentValue) {
         node.children.push(newNode);
       }
     });
@@ -68,9 +68,7 @@ class Tree {
   }
 }
 
-class Node {
-  constructor(value, children) {
-    this.value = value;
-    this.children = children;
-  }
-}
+export const initTree = () => {
+  const tree = new Tree();
+  return tree;
+};

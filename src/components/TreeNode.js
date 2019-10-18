@@ -5,8 +5,8 @@ import { addChild, addSibling } from '../actions/cell';
 const uuidv4 = require('uuid/v4');
 
 const TreeNode = props => {
+  console.log('initital tree ', props.tree);
   const { tree } = props;
-  console.log(tree);
   const { dispatchAddChild, dispatchAddSibling } = props;
   const handleAddChild = cell => {
     const id = uuidv4();
@@ -28,7 +28,7 @@ const TreeNode = props => {
       name: '...',
       parentId: cell.parentId
     };
-    tree.map(t => {
+    tree.map((t, key) => {
       if (t.parentId === newCell.parentId) {
         Object.entries(t).map(tt => {
           if (tt[0] !== 'te83nwko7b') {
@@ -46,18 +46,19 @@ const TreeNode = props => {
     <div className="flex items-center justify-center">
       <div>
         {tree &&
-          tree.map(t =>
-            Object.entries(t).map((tr, key) => {
-              return (
-                <Cell
-                  key={key}
-                  cell={tr[1]}
-                  handleAddChild={handleAddChild}
-                  handleAddSibling={handleAddSibling}
-                />
-              );
-            })
-          )}
+          tree.children &&
+          tree.children.length > 0 &&
+          tree.children.map((treeNode, key) => (
+            <div key={key}>
+              <Cell
+                key={key}
+                cell={treeNode}
+                handleAddChild={handleAddChild}
+                handleAddSibling={handleAddSibling}
+              />
+              {treeNode.children.length > 0 && <TreeNode tree={treeNode} />}
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -72,8 +73,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  const { tree } = state;
-  return { tree: tree };
+  const tree = state.tree._root;
+  return { tree: tree || undefined };
 };
 
 export default connect(
