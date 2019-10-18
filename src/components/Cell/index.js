@@ -21,7 +21,7 @@ export const Cell = props => {
             {id}
           </div>
         </div>
-        {/* only render "add sibling" button for cell not root*/}
+        {/* only render "add sibling" button for cell not root */}
         {!cell.root && (
           <div
             className={[
@@ -45,10 +45,6 @@ export const Cell = props => {
           <Button />
         </div>
       </div>
-      {/* base case */}
-      {/* {props.cell.children.length > 0 && (
-        <Cell key={id} cell={props.cell.children} />
-      )} */}
     </div>
   );
 };
