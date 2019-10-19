@@ -1,14 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import TreeNode from './components/TreeNode';
 
-function App() {
-  return <TreeNode />;
-}
-
-const mapStateToProps = state => {
-  const { tree } = state;
-  return { tree: tree || undefined };
+const App = props => {
+  return (
+    <div>
+      <TreeNode />
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(App);
+export default App;

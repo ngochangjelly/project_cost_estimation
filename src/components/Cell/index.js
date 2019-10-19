@@ -10,15 +10,16 @@ export const Cell = props => {
     <div>
       <div className="mt-12 w-64 h-32 relative">
         <div
-          className={
-            (cell.siblingId && 'bg-primary', 'border main-border w-56 h-24')
-          }
+          className={[
+            'border main-border w-56 h-24',
+            cell?.children?.length > 0 && 'vertical-line'
+          ]}
         >
           <div className="flex items-center h-4 w-full main-border-bottom">
             <IoIosMore className="main-text-color text-4xl font-semibold pl-2" />
           </div>
           <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
-            {id}
+            {name}
           </div>
         </div>
         {/* only render "add sibling" button for cell not root */}

@@ -23,3 +23,14 @@
 .add-sibling-btn:hover {
   opacity: 1;
 }
+/* lines to connect among cells */
+.vertical-line::after {
+  content: '';
+  display: inline-block;
+  height: 0.5em;
+  vertical-align: bottom;
+  width: 100%;
+  /* margin-right: -100%; */
+  /* margin-left: 10px; */
+  border-top: 1px solid black;
+}

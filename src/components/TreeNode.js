@@ -5,13 +5,12 @@ import { addChild, addSibling } from '../actions/cell';
 const uuidv4 = require('uuid/v4');
 
 const TreeNode = props => {
-  console.log('initital tree ', props.tree);
   const { tree } = props;
   const { dispatchAddChild, dispatchAddSibling } = props;
   const handleAddChild = cell => {
     const id = uuidv4();
     let newCell = {};
-    newCell[`${id}`] = {
+    newCell = {
       group: 'body',
       id: id,
       name: '...',
@@ -22,44 +21,34 @@ const TreeNode = props => {
   const handleAddSibling = cell => {
     const id = uuidv4();
     let newCell = {};
-    newCell[`${id}`] = {
+    newCell = {
       group: 'body',
       id: id,
       name: '...',
       parentId: cell.parentId
     };
-    tree.map((t, key) => {
-      if (t.parentId === newCell.parentId) {
-        Object.entries(t).map(tt => {
-          if (tt[0] !== 'te83nwko7b') {
-            if (!tt[1].siblingId) {
-              tt[1].siblingId = 0;
-            }
-            newCell[`${id}`].siblingId = tt[1].siblingId + 1;
-          }
-        });
-      }
-    });
     dispatchAddSibling(newCell);
   };
   return (
     <div className="flex items-center justify-center">
-      <div>
-        {tree &&
-          tree.children &&
-          tree.children.length > 0 &&
-          tree.children.map((treeNode, key) => (
-            <div key={key}>
-              <Cell
-                key={key}
-                cell={treeNode}
-                handleAddChild={handleAddChild}
-                handleAddSibling={handleAddSibling}
+      {tree?.children?.length > 0 &&
+        tree.children.map((treeNode, key) => (
+          <div key={key}>
+            <Cell
+              key={key}
+              cell={treeNode}
+              handleAddChild={handleAddChild}
+              handleAddSibling={handleAddSibling}
+            />
+            {treeNode.children.length > 0 && (
+              <TreeNode
+                tree={treeNode}
+                dispatchAddChild={dispatchAddChild}
+                dispatchAddSibling={dispatchAddSibling}
               />
-              {treeNode.children.length > 0 && <TreeNode tree={treeNode} />}
-            </div>
-          ))}
-      </div>
+            )}
+          </div>
+        ))}
     </div>
   );
 };
@@ -73,8 +62,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  const tree = state.tree._root;
-  return { tree: tree || undefined };
+  const tree = state.tree.tree._root;
+  return { tree: tree };
 };
 
 export default connect(

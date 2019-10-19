@@ -1,5 +1,5 @@
 import * as actionTypes from '../constant';
-import { Tree, initTree } from '../constant/tree';
+import { initTree } from '../constant/tree';
 
 const ChartTree = initTree();
 //add root node to tree
@@ -9,6 +9,7 @@ ChartTree._addNode({
   name: 'Main page',
   root: true
 });
+//seed other node
 ChartTree._addNode(
   {
     group: 'body',
@@ -21,7 +22,7 @@ ChartTree._addNode(
   {
     group: 'body',
     id: 'te22nwkoaa',
-    name: 'Body2'
+    name: '1'
   },
   'te83nwkoaa'
 );
@@ -29,27 +30,36 @@ ChartTree._addNode(
   {
     group: 'body',
     id: 'we2a4nwkoaa',
-    name: 'Body3'
+    name: '2'
   },
   'te22nwkoaa'
 );
 ChartTree._addNode(
   {
     group: 'body',
-    id: 'hello',
-    name: 'Body3'
+    id: 'we2a4nwkoaa',
+    name: '2'
   },
   'te22nwkoaa'
 );
-
-export function treeReducer(state = ChartTree || null, action) {
+const initialState = {
+  tree: ChartTree
+};
+const tree = (state = initialState, action) => {
+  const { cell } = action;
+  let updatedTree;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
-      const { cell } = action;
-      return state.concat(action.cell);
+      ChartTree._addNode(cell, cell.parentId);
+      updatedTree = ChartTree;
+      state.tree = tree;
+      return state;
     case actionTypes.ADD_SIBLING:
-      return state.concat(action.cell);
+      ChartTree._addNode(cell, cell.parentId);
+      updatedTree = ChartTree;
+      return state;
     default:
       return state;
   }
-}
+};
+export default tree;

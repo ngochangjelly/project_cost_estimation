@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import { treeReducer as tree } from "./treeReducer";
+import { combineReducers } from 'redux';
+import tree from './tree';
 export default combineReducers({
   tree
 });
