@@ -1,5 +1,6 @@
 import * as actionTypes from '../constant';
 import { initTree } from '../constant/tree';
+import produce from 'immer';
 
 const ChartTree = initTree();
 //add root node to tree
@@ -21,45 +22,27 @@ ChartTree._addNode(
 ChartTree._addNode(
   {
     group: 'body',
-    id: 'te22nwkoaa',
+    id: '22nwkoaa',
     name: '1'
   },
-  'te83nwkoaa'
+  'te83nwko7b'
 );
-ChartTree._addNode(
-  {
-    group: 'body',
-    id: 'we2a4nwkoaa',
-    name: '2'
-  },
-  'te22nwkoaa'
-);
-ChartTree._addNode(
-  {
-    group: 'body',
-    id: 'we2a4nwkoaa',
-    name: '2'
-  },
-  'te22nwkoaa'
-);
+const tree = ChartTree;
 const initialState = {
-  tree: ChartTree
+  tree
 };
-const tree = (state = initialState, action) => {
+export const treeReducer = produce((state = initialState, action) => {
   const { cell } = action;
-  let updatedTree;
+  console.log(cell);
   switch (action.type) {
     case actionTypes.ADD_CHILD:
-      ChartTree._addNode(cell, cell.parentId);
-      updatedTree = ChartTree;
-      state.tree = tree;
-      return state;
+      let tree = state.tree;
+      tree._addNode(cell, cell.value.parentId);
+      return { ...state, tree };
     case actionTypes.ADD_SIBLING:
-      ChartTree._addNode(cell, cell.parentId);
-      updatedTree = ChartTree;
+      state.tree._addNode(cell, cell.parentId);
       return state;
     default:
       return state;
   }
-};
-export default tree;
+});

@@ -12,7 +12,7 @@ export const Cell = props => {
         <div
           className={[
             'border main-border w-56 h-24',
-            cell?.children?.length > 0 && 'vertical-line'
+            root ? ' below-line' : ' above-line'
           ]}
         >
           <div className="flex items-center h-4 w-full main-border-bottom">

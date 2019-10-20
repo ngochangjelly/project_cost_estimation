@@ -4,7 +4,7 @@ import TreeNode from './components/TreeNode';
 const App = props => {
   return (
     <div>
-      <TreeNode />
+      <TreeNode store={props.store} />
     </div>
   );
 };
