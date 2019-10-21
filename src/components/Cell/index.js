@@ -9,11 +9,14 @@ export const Cell = props => {
   const { name, id, root } = cell;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
+  console.log(activeCell);
   return (
     <div>
       <div className="mt-12 w-64 h-32 relative">
         <div
-          onClick={() => setIsEditing({ activeCell: id, editing: !editing })}
+          onClick={() => {
+            setIsEditing({ activeCell: id, editing: !editing });
+          }}
           className={classNames(
             'border main-border w-56 h-24',
             root ? 'absolute below-line' : 'absolute above-line'
@@ -36,29 +39,44 @@ export const Cell = props => {
             {name}
           </div>
         </div>
-        {/* only render "add sibling" button for cell not root */}
-        {!cell.root && (
+        {/* only render "add sibling" button for cell not root*/}
+        {!cell.root &&
+          (activeCell !== id && (
+            <div
+              className={[
+                'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-24 absolute top-0 right-0'
+              ]}
+              onClick={() => {
+                props.handleAddSibling(cell);
+              }}
+            >
+              <Button name="add" />
+            </div>
+          ))}
+        {activeCell !== id && (
           <div
             className={[
-              'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-24 absolute top-0 right-0'
+              'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
             ]}
             onClick={() => {
-              props.handleAddSibling(cell);
+              props.handleAddChild(cell);
             }}
           >
-            <Button />
+            <Button name="add" />
           </div>
         )}
-        <div
-          className={[
-            'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
-          ]}
-          onClick={() => {
-            props.handleAddChild(cell);
-          }}
-        >
-          <Button />
-        </div>
+        {activeCell === id && (
+          <div
+            className={[
+              'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
+            ]}
+            onClick={() => {
+              props.handleAddChild(cell);
+            }}
+          >
+            <Button name="minus" />
+          </div>
+        )}
       </div>
     </div>
   );
