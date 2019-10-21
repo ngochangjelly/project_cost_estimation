@@ -23,31 +23,33 @@
 .add-sibling-btn:hover {
   opacity: 1;
 }
-/* lines to connect among cells */
+/*vertical lines to connect among cells */
 .above-line::after {
   content: '';
   position: absolute;
   z-index: -1;
-  top: -20px;
-  bottom: 0px;
-  left: 50%;
-  border-left: 2px solid #2f7fef;
-  /* transform: translate(-50%); */
-}
-
-.below-line::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: 0px;
-  bottom: 0px;
+  height: 36px;
+  top: -36px;
   left: 50%;
   border-left: 2px solid #2f7fef;
   transform: translate(-50%);
 }
+
+.below-line::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  height: 62px;
+  bottom: -30px;
+  left: 50%;
+  border-left: 2px solid #2f7fef;
+  transform: translate(-50%);
+}
+/* horizontal line to connect between cells */
 .connect-line::before {
   content: '';
   position: absolute;
+  width: 48px;
   height: 1px;
   left: 0;
   background-color: #2f7fef;

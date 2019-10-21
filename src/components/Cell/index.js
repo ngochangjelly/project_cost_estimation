@@ -2,21 +2,35 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
+var classNames = require('classnames');
 
 export const Cell = props => {
   const cell = props.cell.value;
   const { name, id, root } = cell;
+  const { isEditing, setIsEditing } = props;
+  const { activeCell, editing } = isEditing;
   return (
     <div>
       <div className="mt-12 w-64 h-32 relative">
         <div
-          className={[
+          onClick={() => setIsEditing({ activeCell: id, editing: !editing })}
+          className={classNames(
             'border main-border w-56 h-24',
-            root ? ' below-line' : ' above-line'
-          ]}
+            root ? 'absolute below-line' : 'absolute above-line'
+          )}
         >
-          <div className="flex items-center h-4 w-full main-border-bottom">
-            <IoIosMore className="main-text-color text-4xl font-semibold pl-2" />
+          <div
+            className={classNames(
+              'flex items-center h-4 w-full main-border-bottom',
+              editing && activeCell === id && 'main-bg'
+            )}
+          >
+            <IoIosMore
+              className={classNames(
+                'text-4xl font-semibold pl-2',
+                editing && id === activeCell ? 'text-white' : 'main-text-color'
+              )}
+            />
           </div>
           <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
             {name}
@@ -37,7 +51,7 @@ export const Cell = props => {
         )}
         <div
           className={[
-            'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56'
+            'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
           ]}
           onClick={() => {
             props.handleAddChild(cell);

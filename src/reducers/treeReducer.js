@@ -1,6 +1,5 @@
 import * as actionTypes from '../constant';
 import { initTree } from '../constant/tree';
-import produce from 'immer';
 
 const ChartTree = initTree();
 //add root node to tree
@@ -31,18 +30,17 @@ const tree = ChartTree;
 const initialState = {
   tree
 };
-export const treeReducer = produce((state = initialState, action) => {
+export const treeReducer = (state = initialState, action) => {
   const { cell } = action;
-  console.log(cell);
+  let tree = state.tree;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
-      let tree = state.tree;
       tree._addNode(cell, cell.value.parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
-      state.tree._addNode(cell, cell.parentId);
-      return state;
+      tree._addNode(cell, cell.value.parentId);
+      return { ...state, tree };
     default:
       return state;
   }
-});
+};

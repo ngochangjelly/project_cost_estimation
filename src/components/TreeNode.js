@@ -13,6 +13,10 @@ function useForceUpdate() {
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
+  const [isEditing, setIsEditing] = useState({
+    activeCell: '',
+    editing: false
+  });
 
   const { dispatchAddChild, dispatchAddSibling } = props;
   const handleAddChild = cell => {
@@ -26,12 +30,10 @@ const TreeNode = props => {
   };
   const handleAddSibling = cell => {
     const id = uuidv4();
-    let newCell = {};
-    newCell = {
-      group: 'body',
-      id: id,
-      name: '...',
-      parentId: cell.parentId
+
+    let newCell = {
+      value: { group: 'body', id: id, name: '...', parentId: cell.id },
+      children: []
     };
     dispatchAddSibling(newCell);
     forceUpdate();
@@ -42,7 +44,8 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.value?.root && (
           <Cell
-            // key={tree.value.id}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
             cell={tree}
             handleAddChild={handleAddChild}
             handleAddSibling={handleAddSibling}
@@ -54,6 +57,8 @@ const TreeNode = props => {
           tree.children.map((treeNode, key) => (
             <div key={key}>
               <Cell
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
                 key={key}
                 cell={treeNode}
                 handleAddChild={handleAddChild}
@@ -82,7 +87,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => {
-  console.log(state);
   const tree = state.tree.tree._root;
   return { tree };
 };
