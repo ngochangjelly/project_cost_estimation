@@ -8,7 +8,9 @@ ChartTree._addNode({
   id: 'te83nwko7b',
   name: 'Main page',
   parentId: '',
-  root: true
+  root: true,
+  isFirstChild: false,
+  isLastChild: false
 });
 //seed other node
 ChartTree._addNode(
@@ -17,7 +19,8 @@ ChartTree._addNode(
     id: 'te83nwkoaa',
     name: 'Body',
     parentId: 'te83nwko7b',
-    root: false
+    isFirstChild: true,
+    isLastChild: false
   },
   'te83nwko7b'
 );
@@ -27,7 +30,8 @@ ChartTree._addNode(
     id: '22nwkoaa',
     name: '1',
     parentId: 'te83nwko7b',
-    root: false
+    isFirstChild: false,
+    isLastChild: true
   },
   'te83nwko7b'
 );

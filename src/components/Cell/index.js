@@ -6,13 +6,22 @@ var classNames = require('classnames');
 
 export const Cell = props => {
   const cell = props.cell.value;
-  const { name, id, root } = cell;
+  const { name, id, root, isFirstChild, isLastChild, isChild } = cell;
   const { handleAddChild, handleAddSibling, handleRemoveCell } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
   return (
-    <div>
-      <div className="mt-12 w-64 h-32 relative">
+    <div
+      className={classNames(
+        'relative',
+        isFirstChild && 'right-connect-line',
+        isLastChild && 'left-connect-line',
+        isChild && 'full-connect-line'
+      )}
+    >
+      <div
+        className={classNames('mt-12 w-64 h-32 relative flex justify-center')}
+      >
         <div
           onClick={() => {
             //reset active cell to empty string if user toggle editing from true to false
@@ -51,7 +60,7 @@ export const Cell = props => {
                 handleAddSibling(cell);
               }}
             >
-              <Button name="add" />
+              <Button name="add" className="z-100" />
             </div>
           ))}
         {activeCell !== id && (
@@ -63,7 +72,7 @@ export const Cell = props => {
               handleAddChild(cell);
             }}
           >
-            <Button name="add" />
+            <Button name="add" className="z-100" />
           </div>
         )}
         {activeCell === id && (

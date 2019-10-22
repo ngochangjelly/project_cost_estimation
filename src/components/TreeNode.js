@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
 import { addChild, addSibling, removeCell } from '../actions/cell';
-
 const uuidv4 = require('uuid/v4');
+var classNames = require('classnames');
 
 //create your forceUpdate hook
 function useForceUpdate() {
@@ -13,6 +13,7 @@ function useForceUpdate() {
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
+  const { isFirstChild, isLastChild } = tree.value || tree;
   const [isEditing, setIsEditing] = useState({
     activeCell: '',
     editing: false
@@ -20,17 +21,13 @@ const TreeNode = props => {
 
   const { dispatchAddChild, dispatchAddSibling, dispatchRemoveCell } = props;
   const handleAddChild = cell => {
-    console.log(cell);
-    console.log(cell.parentId);
-    console.log(cell.id);
     const id = uuidv4();
     let newCell = {
       value: {
         group: 'body',
         id: id,
         name: 'name',
-        parentId: cell.id,
-        root: false
+        parentId: cell.id
       },
       children: []
     };
@@ -41,7 +38,13 @@ const TreeNode = props => {
     const id = uuidv4();
 
     let newCell = {
-      value: { group: 'body', id: id, name: '...', parentId: cell.parentId },
+      value: {
+        group: 'body',
+        id: id,
+        name: '...',
+        parentId: cell.parentId,
+        isChild: true
+      },
       children: []
     };
     dispatchAddSibling(newCell);
@@ -53,7 +56,7 @@ const TreeNode = props => {
     forceUpdate();
   };
   return (
-    <div>
+    <div className="">
       {/* render root cell */}
       <div className="flex justify-center">
         {tree?.value?.root && (
@@ -69,7 +72,7 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.children?.length > 0 &&
           tree.children.map((treeNode, key) => (
-            <div key={key} className="flex flex-col items-center">
+            <div key={key} className={classNames('flex flex-col items-center')}>
               <Cell
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
@@ -107,7 +110,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   const tree = state.tree.tree._root;
-  console.log(tree);
   return { tree };
 };
 

@@ -1,3 +1,10 @@
+/* root css */
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: visible;
+}
+
 .main-bg {
   background-color: #2f7fef;
 }
@@ -39,18 +46,35 @@
   content: '';
   position: absolute;
   z-index: -1;
-  height: 62px;
-  bottom: -30px;
+  height: 36px;
+  bottom: -36px;
   left: 50%;
   border-left: 2px solid #2f7fef;
   transform: translate(-50%);
 }
 /* horizontal line to connect between cells */
-.connect-line::before {
+.left-connect-line::before {
   content: '';
   position: absolute;
-  width: 48px;
-  height: 1px;
   left: 0;
+  right: 50%;
+  height: 1px;
+  background-color: #2f7fef;
+}
+.right-connect-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  right: 0;
+  /* width: 100px; */
+  height: 1px;
+  background-color: #2f7fef;
+}
+.full-connect-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
   background-color: #2f7fef;
 }
