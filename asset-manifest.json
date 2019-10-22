@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/project_cost_estimation/static/css/main.916a042e.chunk.css",
+    "main.js": "/project_cost_estimation/static/js/main.09315f8d.chunk.js",
+    "main.js.map": "/project_cost_estimation/static/js/main.09315f8d.chunk.js.map",
+    "runtime~main.js": "/project_cost_estimation/static/js/runtime~main.2dd18e98.js",
+    "runtime~main.js.map": "/project_cost_estimation/static/js/runtime~main.2dd18e98.js.map",
+    "static/js/2.e8c34544.chunk.js": "/project_cost_estimation/static/js/2.e8c34544.chunk.js",
+    "static/js/2.e8c34544.chunk.js.map": "/project_cost_estimation/static/js/2.e8c34544.chunk.js.map",
+    "index.html": "/project_cost_estimation/index.html",
+    "precache-manifest.7ea008d48986aa83f0effa9bdbc29810.js": "/project_cost_estimation/precache-manifest.7ea008d48986aa83f0effa9bdbc29810.js",
+    "service-worker.js": "/project_cost_estimation/service-worker.js",
+    "static/css/main.916a042e.chunk.css.map": "/project_cost_estimation/static/css/main.916a042e.chunk.css.map"
+  }
+}
