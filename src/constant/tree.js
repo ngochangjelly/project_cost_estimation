@@ -15,8 +15,6 @@ export class Tree {
   }
 
   _addNode(value, parentValue) {
-    // console.log(value);
-    // console.log(parentValue);
     const newNode = {
       value: value,
       children: []

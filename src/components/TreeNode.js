@@ -41,7 +41,7 @@ const TreeNode = props => {
     const id = uuidv4();
 
     let newCell = {
-      value: { group: 'body', id: id, name: '...', parentId: cell.id },
+      value: { group: 'body', id: id, name: '...', parentId: cell.parentId },
       children: []
     };
     dispatchAddSibling(newCell);
@@ -66,7 +66,7 @@ const TreeNode = props => {
           />
         )}
       </div>
-      <div className="flex items-center justify-center">
+      <div className="flex justify-center">
         {tree?.children?.length > 0 &&
           tree.children.map((treeNode, key) => (
             <div key={key}>
