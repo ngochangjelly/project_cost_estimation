@@ -75,7 +75,8 @@ export const Cell = props => {
             <Button name="add" className="z-100" />
           </div>
         )}
-        {activeCell === id && (
+        {/* toggle remove button on hover cell but not the root cell */}
+        {activeCell === id && !root && (
           <div
             className={classNames(
               'absolute bottom-0 right-0 flex justify-center w-56 h-4',
