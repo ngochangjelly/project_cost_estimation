@@ -8,3 +8,8 @@ export const addSibling = cell => ({
   type: actionTypes.ADD_SIBLING,
   cell: cell
 });
+
+export const removeCell = cell => ({
+  type: actionTypes.REMOVE_CELL,
+  cell: cell
+});

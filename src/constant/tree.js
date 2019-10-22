@@ -15,8 +15,10 @@ export class Tree {
   }
 
   _addNode(value, parentValue) {
+    // console.log(value);
+    // console.log(parentValue);
     const newNode = {
-      value,
+      value: value,
       children: []
     };
 
@@ -27,7 +29,7 @@ export class Tree {
 
     this._traverse(node => {
       if (node.value.id === parentValue) {
-        node.children.push(newNode);
+        return node.children.push(newNode);
       }
     });
   }
@@ -35,7 +37,7 @@ export class Tree {
   _removeNode(value) {
     this._traverse(node => {
       node.children.forEach((childNode, index) => {
-        if (childNode.value === value) {
+        if (childNode.value.id === value) {
           node.children.splice(index, 1);
         }
       });

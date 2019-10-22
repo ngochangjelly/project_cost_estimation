@@ -7,15 +7,16 @@ var classNames = require('classnames');
 export const Cell = props => {
   const cell = props.cell.value;
   const { name, id, root } = cell;
+  const { handleAddChild, handleAddSibling, handleRemoveCell } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
-  console.log(activeCell);
   return (
     <div>
       <div className="mt-12 w-64 h-32 relative">
         <div
           onClick={() => {
-            setIsEditing({ activeCell: id, editing: !editing });
+            //reset active cell to empty string if user toggle editing from true to false
+            setIsEditing({ activeCell: editing ? '' : id, editing: !editing });
           }}
           className={classNames(
             'border main-border w-56 h-24',
@@ -36,7 +37,7 @@ export const Cell = props => {
             />
           </div>
           <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
-            {name}
+            {id || '...'}
           </div>
         </div>
         {/* only render "add sibling" button for cell not root*/}
@@ -47,7 +48,7 @@ export const Cell = props => {
                 'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-24 absolute top-0 right-0'
               ]}
               onClick={() => {
-                props.handleAddSibling(cell);
+                handleAddSibling(cell);
               }}
             >
               <Button name="add" />
@@ -59,7 +60,7 @@ export const Cell = props => {
               'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
             ]}
             onClick={() => {
-              props.handleAddChild(cell);
+              handleAddChild(cell);
             }}
           >
             <Button name="add" />
@@ -67,11 +68,12 @@ export const Cell = props => {
         )}
         {activeCell === id && (
           <div
-            className={[
-              'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-4'
-            ]}
+            className={classNames(
+              'absolute bottom-0 right-0 flex justify-center w-56 h-4',
+              editing && activeCell === id ? 'opacity-1' : 'opacity-0'
+            )}
             onClick={() => {
-              props.handleAddChild(cell);
+              handleRemoveCell(cell);
             }}
           >
             <Button name="minus" />

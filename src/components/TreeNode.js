@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
-import { addChild, addSibling } from '../actions/cell';
+import { addChild, addSibling, removeCell } from '../actions/cell';
 
 const uuidv4 = require('uuid/v4');
 
@@ -18,11 +18,20 @@ const TreeNode = props => {
     editing: false
   });
 
-  const { dispatchAddChild, dispatchAddSibling } = props;
+  const { dispatchAddChild, dispatchAddSibling, dispatchRemoveCell } = props;
   const handleAddChild = cell => {
+    console.log(cell);
+    console.log(cell.parentId);
+    console.log(cell.id);
     const id = uuidv4();
     let newCell = {
-      value: { group: 'body', id: id, name: '...', parentId: cell.id },
+      value: {
+        group: 'body',
+        id: id,
+        name: 'name',
+        parentId: cell.id,
+        root: false
+      },
       children: []
     };
     dispatchAddChild(newCell);
@@ -36,6 +45,11 @@ const TreeNode = props => {
       children: []
     };
     dispatchAddSibling(newCell);
+    forceUpdate();
+  };
+
+  const handleRemoveCell = cell => {
+    dispatchRemoveCell(cell);
     forceUpdate();
   };
   return (
@@ -63,12 +77,14 @@ const TreeNode = props => {
                 cell={treeNode}
                 handleAddChild={handleAddChild}
                 handleAddSibling={handleAddSibling}
+                handleRemoveCell={handleRemoveCell}
               />
               {treeNode.children.length > 0 && (
                 <TreeNode
                   tree={treeNode}
                   dispatchAddChild={dispatchAddChild}
                   dispatchAddSibling={dispatchAddSibling}
+                  dispatchRemoveCell={dispatchRemoveCell}
                 />
               )}
             </div>
@@ -83,11 +99,15 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchAddSibling: cell => {
     dispatch(addSibling(cell));
+  },
+  dispatchRemoveCell: cell => {
+    dispatch(removeCell(cell));
   }
 });
 
 const mapStateToProps = state => {
   const tree = state.tree.tree._root;
+  console.log(tree);
   return { tree };
 };
 

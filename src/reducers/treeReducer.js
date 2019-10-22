@@ -7,6 +7,7 @@ ChartTree._addNode({
   group: 'main',
   id: 'te83nwko7b',
   name: 'Main page',
+  parentId: '',
   root: true
 });
 //seed other node
@@ -14,7 +15,9 @@ ChartTree._addNode(
   {
     group: 'body',
     id: 'te83nwkoaa',
-    name: 'Body'
+    name: 'Body',
+    parentId: 'te83nwko7b',
+    root: false
   },
   'te83nwko7b'
 );
@@ -22,7 +25,9 @@ ChartTree._addNode(
   {
     group: 'body',
     id: '22nwkoaa',
-    name: '1'
+    name: '1',
+    parentId: 'te83nwko7b',
+    root: false
   },
   'te83nwko7b'
 );
@@ -32,13 +37,16 @@ const initialState = {
 };
 export const treeReducer = (state = initialState, action) => {
   const { cell } = action;
-  let tree = state.tree;
+  let { tree } = state;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
       tree._addNode(cell, cell.value.parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
       tree._addNode(cell, cell.value.parentId);
+      return { ...state, tree };
+    case actionTypes.REMOVE_CELL:
+      tree._removeNode(cell.id);
       return { ...state, tree };
     default:
       return state;
