@@ -69,7 +69,7 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.children?.length > 0 &&
           tree.children.map((treeNode, key) => (
-            <div key={key}>
+            <div key={key} className="flex flex-col items-center">
               <Cell
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
