@@ -109,7 +109,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   const tree = state.tree.tree._root;
-  console.log(tree);
   return { tree };
 };
 

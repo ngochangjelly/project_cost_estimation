@@ -50,7 +50,6 @@ export const treeReducer = (state = initialState, action) => {
       if (childPosition === 0) {
         cell.value.isFirstChild = true;
       }
-      // console.log(cell);
       tree._addNode(cell, cell.value.parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:

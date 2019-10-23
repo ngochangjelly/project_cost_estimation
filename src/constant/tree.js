@@ -27,7 +27,7 @@ export class Tree {
 
     this._traverse(node => {
       if (node.value.id === parentValue) {
-        return node.children.push(newNode);
+        return node.children.push(value);
       }
     });
   }
