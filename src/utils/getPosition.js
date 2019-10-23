@@ -1,3 +1,4 @@
+//this function get position of a child node in it's parents' children array
 export const getPosition = (length, position) => {
   if (position === 0 && length > 0) {
     return 'isFirstChild';

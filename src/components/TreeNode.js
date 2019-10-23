@@ -44,7 +44,6 @@ const TreeNode = props => {
         id: id,
         name: 'name',
         parentId: cell.parentId,
-        isChild: true,
         hasChildren: false
       },
       children: []

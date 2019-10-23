@@ -25,7 +25,6 @@ export const treeReducer = (state = initialState, action) => {
   const length = parentNode?.children?.length;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
-      // check to find cell position as a child and sibling
       cell.value.position = getPosition(length, position);
       //toggle previouse sibling node into isChild
       if (parentNode.children.length > 1) {
