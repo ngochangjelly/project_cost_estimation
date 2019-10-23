@@ -45,7 +45,7 @@ export class Tree {
   _search(value) {
     let returnNode = 'Not Found';
     this._traverse(node => {
-      if (node.value === value) {
+      if (node.value.id === value) {
         returnNode = node;
       }
     });

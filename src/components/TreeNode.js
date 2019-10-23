@@ -13,7 +13,6 @@ function useForceUpdate() {
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
-  const { isFirstChild, isLastChild } = tree.value || tree;
   const [isEditing, setIsEditing] = useState({
     activeCell: '',
     editing: false
@@ -56,7 +55,7 @@ const TreeNode = props => {
     forceUpdate();
   };
   return (
-    <div className="">
+    <div>
       {/* render root cell */}
       <div className="flex justify-center">
         {tree?.value?.root && (
@@ -110,6 +109,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   const tree = state.tree.tree._root;
+  console.log(tree);
   return { tree };
 };
 
