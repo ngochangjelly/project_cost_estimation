@@ -19,6 +19,7 @@ const initialState = {
 export const treeReducer = (state = initialState, action) => {
   const { cell } = action;
   const parentId = cell?.value?.parentId;
+  const siblingId = cell?.value?.siblingId;
   let { tree } = state;
   const parentNode = tree._search(parentId);
   const position = parentNode?.children?.length;
@@ -26,7 +27,7 @@ export const treeReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_CHILD:
       cell.value.position = getPosition(length, position);
-      //toggle previouse sibling node into isChild
+      //toggle previous sibling node into isChild
       if (parentNode.children.length > 1) {
         parentNode.children[length - 1].value.position = 'isChild';
       }
@@ -39,7 +40,25 @@ export const treeReducer = (state = initialState, action) => {
       tree._addNode(cell, parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
-      tree._addNode(cell, parentId);
+      // mark position as last child if it's the last cell added
+      if (
+        length > 0 &&
+        tree._childPosition(parentId, siblingId) === length - 1
+      ) {
+        cell.value.position = 'isLastChild';
+        tree._search(siblingId).value.position = 'isChild';
+      }
+      //mark previous sibling as firstChild if the parent node has 2 childrens up until now
+      if (length === 1) {
+        parentNode.children[0].value.position = 'isFirstChild';
+      }
+      if (
+        length > 1 &&
+        tree._childPosition(parentId, siblingId) !== length - 1
+      ) {
+        parentNode.children[length - 1].value.position = 'isChild';
+      }
+      tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
     case actionTypes.REMOVE_CELL:
       tree._removeNode(cell.id);

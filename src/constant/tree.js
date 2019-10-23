@@ -32,6 +32,21 @@ export class Tree {
     });
   }
 
+  _addSibling(value, parentValue, siblingValue) {
+    this._traverse(node => {
+      if (node.value.id === parentValue) {
+        //find its left sibling position
+        let siblingPosition;
+        node.children.map((n, key) => {
+          if (n.value.id === siblingValue) {
+            siblingPosition = key;
+          }
+        });
+        return node.children.splice(siblingPosition + 1, 0, value);
+      }
+    });
+  }
+
   _removeNode(value) {
     this._traverse(node => {
       node.children.forEach((childNode, index) => {
@@ -65,6 +80,17 @@ export class Tree {
     });
 
     return leafsRet.flat();
+  }
+
+  _childPosition(parentValue, siblingValue) {
+    console.log(parentValue, '   ,', siblingValue);
+    let position;
+    this._search(parentValue).children.map((n, key) => {
+      if (n.value.id === siblingValue) {
+        position = key;
+      }
+    });
+    return position;
   }
 }
 

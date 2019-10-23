@@ -11,7 +11,6 @@ export const getPosition = (length, position) => {
   }
 };
 export const getConnectLine = position => {
-  console.log(position);
   switch (position) {
     case 'isFirstChild':
       return 'right-connect-line';
