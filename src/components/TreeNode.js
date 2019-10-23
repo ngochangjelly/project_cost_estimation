@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
 import { addChild, addSibling, removeCell } from '../actions/cell';
+import { getConnectLine } from '../utils/getPosition';
 const uuidv4 = require('uuid/v4');
 var classNames = require('classnames');
 
@@ -26,7 +27,8 @@ const TreeNode = props => {
         group: 'body',
         id: id,
         name: 'name',
-        parentId: cell.id
+        parentId: cell.id,
+        hasChildren: false
       },
       children: []
     };
@@ -40,9 +42,10 @@ const TreeNode = props => {
       value: {
         group: 'body',
         id: id,
-        name: '...',
+        name: 'name',
         parentId: cell.parentId,
-        isChild: true
+        isChild: true,
+        hasChildren: false
       },
       children: []
     };

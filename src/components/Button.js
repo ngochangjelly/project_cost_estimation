@@ -5,10 +5,15 @@ export default function Button({ name, className, style }) {
   switch (name) {
     case 'add':
       return (
-        <IoIosAddCircle className="w-8 h-8" style={{ color: '#2f7fef' }} />
+        <IoIosAddCircle
+          className="w-12 h-12 text-white z-100"
+          style={{ color: '#2f7fef' }}
+        />
       );
     case 'minus':
-      return <IoIosRemoveCircle className="w-8 h-8" style={{ color: 'red' }} />;
+      return (
+        <IoIosRemoveCircle className="w-12 h-12" style={{ color: 'red' }} />
+      );
     default:
       return null;
   }
