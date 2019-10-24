@@ -40,28 +40,37 @@ export const treeReducer = (state = initialState, action) => {
       tree._addNode(cell, parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
+      const childPos = tree._childPosition(parentId, siblingId);
       if (length === 1) {
         parentNode.children[0].value.position = 'isFirstChild';
         cell.value.position = 'isLastChild';
       }
-      if (
-        length > 1 &&
-        tree._childPosition(parentId, siblingId) === length - 1
-      ) {
-        console.log('hehehehheh');
+      if (length > 1 && childPos === length - 1) {
         cell.value.position = 'isLastChild';
         parentNode.children[length - 1].value.position = 'isChild';
       }
-      if (
-        length > 1 &&
-        tree._childPosition(parentId, siblingId) !== length - 1
-      ) {
+      if (length > 1 && childPos !== length - 1) {
         cell.value.position = 'isChild';
       }
       tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
     case actionTypes.REMOVE_CELL:
       tree._removeNode(cell.id);
+      const parentLength = tree._search(cell.parentId).children.length;
+      //is cell is first
+      if (tree._search(cell.parentId).children.length > 1) {
+        tree._search(cell.parentId).children[0].value.position = 'isFirstChild';
+        tree._search(cell.parentId).children[parentLength - 1].value.position =
+          'isLastChild';
+      }
+      //if cell if first child in 2-child-array
+      if (tree._search(cell.parentId).children.length === 1) {
+        tree._search(cell.parentId).children[0].value.position = '';
+      }
+      //if cell is last cell
+      if (tree._search(cell.parentId).children.length === 1) {
+        tree._search(cell.parentId).children[0].value.position = '';
+      }
       return { ...state, tree };
     default:
       return state;

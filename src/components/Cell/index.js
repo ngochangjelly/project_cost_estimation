@@ -6,8 +6,7 @@ import { getConnectLine } from '../../utils/getPosition';
 var classNames = require('classnames');
 
 export const Cell = props => {
-  const cell = props.cell.value;
-  const { name, id, root, position } = cell;
+  const { name, id, root, position } = props.cell.value;
   const { handleAddChild, handleAddSibling, handleRemoveCell } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
@@ -47,14 +46,14 @@ export const Cell = props => {
           </div>
         </div>
         {/* only render "add sibling" button for cell not root*/}
-        {!cell.root &&
+        {!root &&
           (activeCell !== id && (
             <div
               className={[
                 'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-32 absolute top-0 right-0'
               ]}
               onClick={() => {
-                handleAddSibling(cell);
+                handleAddSibling(props.cell.value);
               }}
             >
               <Button name="add" className="absolute z-100" />
@@ -66,7 +65,7 @@ export const Cell = props => {
               'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-8'
             ]}
             onClick={() => {
-              handleAddChild(cell);
+              handleAddChild(props.cell.value);
             }}
           >
             <Button name="add" className="absolute z-100" />
@@ -80,7 +79,7 @@ export const Cell = props => {
               editing && activeCell === id ? 'opacity-1' : 'opacity-0'
             )}
             onClick={() => {
-              handleRemoveCell(cell);
+              handleRemoveCell(props.cell.value);
             }}
           >
             <Button name="minus" />
