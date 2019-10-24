@@ -83,7 +83,6 @@ export class Tree {
   }
 
   _childPosition(parentValue, siblingValue) {
-    console.log(parentValue, '   ,', siblingValue);
     let position;
     this._search(parentValue).children.map((n, key) => {
       if (n.value.id === siblingValue) {

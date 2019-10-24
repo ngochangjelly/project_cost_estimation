@@ -40,23 +40,23 @@ export const treeReducer = (state = initialState, action) => {
       tree._addNode(cell, parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
-      // mark position as last child if it's the last cell added
-      if (
-        length > 0 &&
-        tree._childPosition(parentId, siblingId) === length - 1
-      ) {
-        cell.value.position = 'isLastChild';
-        tree._search(siblingId).value.position = 'isChild';
-      }
-      //mark previous sibling as firstChild if the parent node has 2 childrens up until now
       if (length === 1) {
         parentNode.children[0].value.position = 'isFirstChild';
+        cell.value.position = 'isLastChild';
+      }
+      if (
+        length > 1 &&
+        tree._childPosition(parentId, siblingId) === length - 1
+      ) {
+        console.log('hehehehheh');
+        cell.value.position = 'isLastChild';
+        parentNode.children[length - 1].value.position = 'isChild';
       }
       if (
         length > 1 &&
         tree._childPosition(parentId, siblingId) !== length - 1
       ) {
-        parentNode.children[length - 1].value.position = 'isChild';
+        cell.value.position = 'isChild';
       }
       tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
