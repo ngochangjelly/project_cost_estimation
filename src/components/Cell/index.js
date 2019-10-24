@@ -13,7 +13,11 @@ export const Cell = props => {
   const { activeCell, editing } = isEditing;
   return (
     <div className={classNames('relative', getConnectLine(position))}>
-      <div className={classNames('mt-12 h-32 relative flex justify-center')}>
+      <div
+        className={classNames(
+          'cell-width mt-12 h-32 relative flex justify-between'
+        )}
+      >
         <div
           onClick={() => {
             //reset active cell to empty string if user toggle editing from true to false
@@ -47,7 +51,7 @@ export const Cell = props => {
           (activeCell !== id && (
             <div
               className={[
-                'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-32 min-h-24 absolute top-0 right-0'
+                'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-32 absolute top-0 right-0'
               ]}
               onClick={() => {
                 handleAddSibling(cell);
