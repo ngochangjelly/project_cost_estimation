@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1984fbe2a32adbe5a2002da9f2154094",
+    "revision": "1740a76c188c6185f8af57f1d07c50c8",
     "url": "/project_cost_estimation/index.html"
   },
   {
-    "revision": "0c6660a5892930a4bd62",
+    "revision": "16807c9e05b032281adf",
     "url": "/project_cost_estimation/static/css/main.19a5db48.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/project_cost_estimation/static/js/2.53d5c03a.chunk.js"
   },
   {
-    "revision": "0c6660a5892930a4bd62",
-    "url": "/project_cost_estimation/static/js/main.228b8bbf.chunk.js"
+    "revision": "16807c9e05b032281adf",
+    "url": "/project_cost_estimation/static/js/main.1ef851d8.chunk.js"
   },
   {
     "revision": "dffffe5feeb0d05280c9",
