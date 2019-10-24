@@ -14,7 +14,7 @@ const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
   const [isEditing, setIsEditing] = useState({
-    activeCell: '',
+    activeCell: undefined,
     editing: false
   });
 

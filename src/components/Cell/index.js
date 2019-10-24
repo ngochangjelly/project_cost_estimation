@@ -20,11 +20,18 @@ export const Cell = props => {
         >
           <div
             onClick={() => {
-              console.log('click on cell ', id);
-              //reset active cell to empty string if user toggle editing from true to false
+              console.log(activeCell);
+              console.log(editing);
               setIsEditing({
-                activeCell: editing ? '' : id,
-                editing: !editing
+                activeCell: id,
+                editing: () => {
+                  if (editing === false || activeCell !== id) {
+                    return true;
+                  }
+                  if (editing === true || activeCell === id) {
+                    return false;
+                  }
+                }
               });
             }}
             className={classNames(
@@ -49,7 +56,7 @@ export const Cell = props => {
               />
             </div>
             <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
-              {id}
+              {name}
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}

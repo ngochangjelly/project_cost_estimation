@@ -4,7 +4,6 @@ export class Tree {
   }
 
   _traverse(callback) {
-    const self = this;
     function goThrough(node) {
       callback(node);
       node.children.forEach(child => {

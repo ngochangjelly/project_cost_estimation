@@ -1,3 +1,19 @@
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+  height: 100%;
+}
+
+.wrapper {
+  width: 100vw;
+  margin: 0 auto;
+  height: 100%;
+}
 .cell-width {
   width: 270px;
 }
