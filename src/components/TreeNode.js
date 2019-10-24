@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
 import { addChild, addSibling, removeCell } from '../actions/cell';
-import { getConnectLine } from '../utils/getPosition';
 const uuidv4 = require('uuid/v4');
 var classNames = require('classnames');
 
@@ -74,7 +73,10 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.children?.length > 0 &&
           tree.children.map((treeNode, key) => (
-            <div key={key} className={classNames('flex flex-col items-center')}>
+            <div
+              key={key}
+              className={classNames('flex flex-col items-center relative')}
+            >
               <Cell
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
