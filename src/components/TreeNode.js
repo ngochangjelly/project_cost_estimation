@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
 import { addChild, addSibling, removeCell } from '../actions/cell';
+import { onClickOutside } from '../utils/detectElement';
 const uuidv4 = require('uuid/v4');
 var classNames = require('classnames');
 
@@ -17,7 +18,6 @@ const TreeNode = props => {
     activeCell: undefined,
     editing: false
   });
-
   const { dispatchAddChild, dispatchAddSibling, dispatchRemoveCell } = props;
   const handleAddChild = cell => {
     const id = uuidv4();
@@ -74,6 +74,7 @@ const TreeNode = props => {
         {tree?.children?.length > 0 &&
           tree.children.map((treeNode, key) => (
             <div
+              id={treeNode.value.id}
               key={key}
               className={classNames('flex flex-col items-center relative')}
             >
