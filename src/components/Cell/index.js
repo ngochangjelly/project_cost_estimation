@@ -7,21 +7,42 @@ import { onClickInside } from '../../utils/detectElement';
 let classNames = require('classnames');
 
 export const Cell = props => {
-  const { name, id, root, position } = props.cell.value;
-  const { handleAddChild, handleAddSibling, handleRemoveCell } = props;
+  const { name, id, root, position, hasChildren } = props.cell.value;
+  const {
+    handleAddChild,
+    handleAddSibling,
+    handleRemoveCell,
+    nodeWidth
+  } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
   useEffect(() => {
-    document.getElementById('root').addEventListener('click', () => {
+    console.log(nodeWidth);
+    if (document && document.getElementById(`remove${id}`)) {
+      //end calculate node width
+      document.getElementById(`remove${id}`).addEventListener('click', e => {
+        handleRemoveCell(props.cell.value);
+        e.stopImmediatePropagation();
+      });
+    }
+    document.getElementById('root').addEventListener('click', e => {
       const clickInside = onClickInside(id, 'root');
-      if (!clickInside) {
+      let onClickRemoveBtn;
+      if (document && document.getElementById(`remove${id}`)) {
+        onClickRemoveBtn = onClickInside(`remove${id}`, 'root');
+      }
+      if (
+        !clickInside ||
+        (clickInside && !onClickRemoveBtn && editing === false)
+      ) {
         setIsEditing({
           activeCell: undefined,
           editing: false
         });
       }
     });
-  }, [id, setIsEditing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing, id, setIsEditing]);
   return (
     <div className={classNames(getConnectLine(position))}>
       <div className={classNames('relative')}>
@@ -73,7 +94,7 @@ export const Cell = props => {
               />
             </div>
             <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
-              {id}
+              {name}
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
@@ -105,15 +126,13 @@ export const Cell = props => {
           {/* toggle remove button on hover cell but not the root cell */}
           {activeCell === id && editing === true && !root && (
             <div
+              id={`remove${id}`}
               className={classNames(
                 'absolute bottom-0 right-0 flex justify-center w-56 h-8',
                 editing === true && activeCell === id
                   ? 'opacity-1'
                   : 'opacity-0'
               )}
-              onClick={() => {
-                handleRemoveCell(props.cell.value);
-              }}
             >
               <Button name="minus" />
             </div>

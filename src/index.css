@@ -69,6 +69,16 @@ body {
   content: '';
   position: absolute;
   left: 0;
+  /* half of width w-64 128px */
+  right: 158px;
+  height: 1px;
+  background-color: #2f7fef;
+}
+.parent-left-connect-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  /* half of width w-64 128px */
   right: 158px;
   height: 1px;
   background-color: #2f7fef;

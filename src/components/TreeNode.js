@@ -11,6 +11,11 @@ function useForceUpdate() {
   const [value, set] = useState(true); //boolean state
   return () => set(value => !value); // toggle the state to force render
 }
+
+const calculateNodeWidth = id => {
+  console.log(id);
+  return id && document?.getElementById(id)?.offsetWidth;
+};
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
@@ -89,6 +94,8 @@ const TreeNode = props => {
               />
               {treeNode.children.length > 0 && (
                 <TreeNode
+                  nodeWidth={calculateNodeWidth(treeNode.value.id)}
+                  id={treeNode.value.id}
                   tree={treeNode}
                   dispatchAddChild={dispatchAddChild}
                   dispatchAddSibling={dispatchAddSibling}
