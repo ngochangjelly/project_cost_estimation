@@ -1,18 +1,11 @@
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  overflow: scroll;
-  height: 100%;
-}
-
 .wrapper {
   width: 100vw;
-  margin: 0 auto;
   height: 100%;
+  /* overflow-x: scroll; */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 0 5vw;
 }
 .cell-width {
   width: 270px;
@@ -98,4 +91,8 @@ body {
   right: 0;
   height: 1px;
   background-color: #2f7fef;
+}
+/* cell draggable */
+.draggable {
+  cursor: move;
 }

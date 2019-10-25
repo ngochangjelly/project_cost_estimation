@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
@@ -16,8 +16,10 @@ export const Cell = props => {
   } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
+  const inputRef = React.createRef();
+
   useEffect(() => {
-    console.log(nodeWidth);
+    console.log(inputRef.current.value);
     if (document && document.getElementById(`remove${id}`)) {
       //end calculate node width
       document.getElementById(`remove${id}`).addEventListener('click', e => {
@@ -43,6 +45,7 @@ export const Cell = props => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, id, setIsEditing]);
+
   return (
     <div className={classNames(getConnectLine(position))}>
       <div className={classNames('relative')}>
@@ -80,7 +83,7 @@ export const Cell = props => {
           >
             <div
               className={classNames(
-                'flex items-center h-4 w-full main-border-bottom',
+                'flex items-center h-4 w-full main-border-bottom draggable',
                 editing && activeCell === id && 'main-bg'
               )}
             >
@@ -93,7 +96,10 @@ export const Cell = props => {
                 )}
               />
             </div>
-            <div className="relative px-2 py-2 text-xl font-semibold main-text-color">
+            <div
+              ref={inputRef}
+              className="relative px-2 py-2 text-xl font-semibold main-text-color"
+            >
               {name}
             </div>
           </div>
