@@ -55,23 +55,37 @@ export const treeReducer = (state = initialState, action) => {
       }
       tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
+
     case actionTypes.APPEND_SIBLING:
       parentId = tree._search(siblingId).value.parentId;
       childPos = tree._childPosition(parentId, siblingId);
-      if (length === 1) {
-        parentNode.children[0].value.position = 'isFirstChild';
+      const cellPos = tree._childPosition(parentId, cell.value.id);
+      if (cellPos === 0 && childPos !== length - 1) {
+        parentNode.children[1].value.position = 'isFirstChild';
+        cell.value.position = 'isChild';
+      }
+      if (cellPos === 0 && childPos === length - 1) {
+        parentNode.children[1].value.position = 'isFirstChild';
+        parentNode.children[length - 1].value.position = 'isChild';
         cell.value.position = 'isLastChild';
       }
-      if (length > 1 && childPos === length - 1) {
+      if (cellPos === length - 1) {
+        parentNode.children[length - 2].value.position = 'isLastChild';
+        cell.value.position = 'isChild';
+      }
+      if (
+        length > 2 &&
+        cellPos !== 0 &&
+        cellPos !== length - 1 &&
+        childPos === length - 1
+      ) {
         cell.value.position = 'isLastChild';
         parentNode.children[length - 1].value.position = 'isChild';
-      }
-      if (length > 1 && childPos !== length - 1) {
-        cell.value.position = 'isChild';
       }
       tree._removeNode(cell.value.id);
       tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
+
     case actionTypes.REMOVE_CELL:
       tree._removeNode(cell.id);
       const parentLength = tree._search(cell.parentId).children.length;

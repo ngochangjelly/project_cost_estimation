@@ -8,7 +8,7 @@
   padding: 0 5vw;
 }
 .cell-width {
-  width: 270px;
+  width: 350px;
 }
 .main-bg {
   background-color: #2f7fef;
@@ -63,7 +63,7 @@
   position: absolute;
   left: 0;
   /* half of width w-64 128px */
-  right: 158px;
+  right: 50%;
   height: 1px;
   background-color: #2f7fef;
 }
@@ -72,14 +72,14 @@
   position: absolute;
   left: 0;
   /* half of width w-64 128px */
-  right: 158px;
+  right: 50%;
   height: 1px;
   background-color: #2f7fef;
 }
 .right-connect-line::before {
   content: '';
   position: absolute;
-  left: 112px;
+  left: 50%;
   right: 0;
   height: 1px;
   background-color: #2f7fef;
@@ -100,5 +100,11 @@
   pointer-events: none;
 }
 .right-dz {
-  margin-left: 224px;
+  margin-top: 48px;
+}
+.left-dz {
+  margin-top: 48px;
+}
+.is-dragging {
+  transform: translateX(20px);
 }
