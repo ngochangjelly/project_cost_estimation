@@ -27,13 +27,14 @@ export const Cell = props => {
   const inputRef = React.createRef();
   const dragStart = (event, cell) => {
     event.dataTransfer.setData('cell', JSON.stringify(cell));
+    console.log(event);
   };
   const allowDrop = event => {
     event.preventDefault();
   };
 
   const drop = (event, data) => {
-    event.preventDefault();
+    // event.preventDefault();
     var data = event.dataTransfer.getData('cell');
     data = JSON.parse(data);
     if (event.target.getAttribute('name') === 'sibling-dropzone') {
@@ -136,6 +137,15 @@ export const Cell = props => {
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
+          {!root && (
+            <div
+              className="w-24 h-24 bg-blue-100 absolute right-dz"
+              name="sibling-dropzone"
+              id={`sibling-dropzone-${id}`}
+              onDrop={e => drop(e, props.cell)}
+              onDragOver={e => allowDrop(e)}
+            ></div>
+          )}
           {!root &&
             (activeCell !== id && (
               <div
@@ -149,15 +159,6 @@ export const Cell = props => {
                 <Button name="add" className="absolute" />
               </div>
             ))}
-          {!root && (
-            <div
-              className="w-24 h-24 bg-blue-100 absolute right-dz"
-              name="sibling-dropzone"
-              id={`sibling-dropzone-${id}`}
-              onDrop={e => drop(e, props.cell)}
-              onDragOver={e => allowDrop(e)}
-            ></div>
-          )}
           {!root && (
             <div
               className="w-56 h-12 bg-blue-100 absolute mt-24"
