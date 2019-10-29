@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
-import { addChild, addSibling, removeCell } from '../actions/cell';
-import { onClickOutside } from '../utils/detectElement';
+import {
+  addChild,
+  addSibling,
+  removeCell,
+  appendSibling
+} from '../actions/cell';
 const uuidv4 = require('uuid/v4');
 var classNames = require('classnames');
 
@@ -13,7 +17,6 @@ function useForceUpdate() {
 }
 
 const calculateNodeWidth = id => {
-  console.log(id);
   return id && document?.getElementById(id)?.offsetWidth;
 };
 const TreeNode = props => {
@@ -23,7 +26,12 @@ const TreeNode = props => {
     activeCell: undefined,
     editing: false
   });
-  const { dispatchAddChild, dispatchAddSibling, dispatchRemoveCell } = props;
+  const {
+    dispatchAddChild,
+    dispatchAddSibling,
+    dispatchRemoveCell,
+    dispatchAppendSibling
+  } = props;
   const handleAddChild = cell => {
     const id = uuidv4();
     let newCell = {
@@ -57,6 +65,12 @@ const TreeNode = props => {
     forceUpdate();
   };
 
+  const handleAppendSibling = (data, siblingId) => {
+    let newCell = data;
+    dispatchAppendSibling(newCell, siblingId);
+    forceUpdate();
+  };
+
   const handleRemoveCell = cell => {
     dispatchRemoveCell(cell);
     forceUpdate();
@@ -72,6 +86,7 @@ const TreeNode = props => {
             cell={tree}
             handleAddChild={handleAddChild}
             handleAddSibling={handleAddSibling}
+            handleAppendSibling={handleAppendSibling}
           />
         )}
       </div>
@@ -90,6 +105,7 @@ const TreeNode = props => {
                 cell={treeNode}
                 handleAddChild={handleAddChild}
                 handleAddSibling={handleAddSibling}
+                handleAppendSibling={handleAppendSibling}
                 handleRemoveCell={handleRemoveCell}
               />
               {treeNode.children.length > 0 && (
@@ -100,6 +116,7 @@ const TreeNode = props => {
                   dispatchAddChild={dispatchAddChild}
                   dispatchAddSibling={dispatchAddSibling}
                   dispatchRemoveCell={dispatchRemoveCell}
+                  dispatchAppendSibling={dispatchAppendSibling}
                 />
               )}
             </div>
@@ -117,6 +134,9 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchRemoveCell: cell => {
     dispatch(removeCell(cell));
+  },
+  dispatchAppendSibling: (cell, id) => {
+    dispatch(appendSibling(cell, id));
   }
 });
 

@@ -96,3 +96,9 @@
 .draggable {
   cursor: move;
 }
+.drop-zone {
+  pointer-events: none;
+}
+.right-dz {
+  margin-left: 224px;
+}

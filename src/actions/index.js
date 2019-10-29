@@ -1,3 +1,3 @@
-import { addChild, addSibling } from "./cell";
+import { addChild, addSibling, removeCell, appendSibling } from './cell';
 
-export default { addChild, addSibling };
+export default { addChild, addSibling, removeCell, appendSibling };

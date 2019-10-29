@@ -13,3 +13,9 @@ export const removeCell = cell => ({
   type: actionTypes.REMOVE_CELL,
   cell: cell
 });
+
+export const appendSibling = (cell, siblingId) => ({
+  type: actionTypes.APPEND_SIBLING,
+  cell: cell,
+  siblingId: siblingId
+});

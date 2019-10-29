@@ -4,7 +4,10 @@ import TreeNode from './components/TreeNode';
 const App = props => {
   return (
     <div className="wrapper mt-24">
-      <TreeNode store={props.store} />
+      <br />
+      <div>
+        <TreeNode store={props.store} />
+      </div>
     </div>
   );
 };

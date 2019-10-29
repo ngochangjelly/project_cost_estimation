@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
@@ -6,20 +6,48 @@ import { getConnectLine } from '../../utils/getPosition';
 import { onClickInside } from '../../utils/detectElement';
 let classNames = require('classnames');
 
+// create your forceUpdate hook
+function useForceUpdate() {
+  const [value, set] = useState(true); //boolean state
+  return () => set(value => !value); // toggle the state to force render
+}
 export const Cell = props => {
+  const forceUpdate = useForceUpdate();
   const { name, id, root, position, hasChildren } = props.cell.value;
   const {
     handleAddChild,
     handleAddSibling,
     handleRemoveCell,
+    handleAppendChild,
+    handleAppendSibling,
     nodeWidth
   } = props;
   const { isEditing, setIsEditing } = props;
   const { activeCell, editing } = isEditing;
   const inputRef = React.createRef();
+  const dragStart = (event, cell) => {
+    event.dataTransfer.setData('cell', JSON.stringify(cell));
+  };
+  const allowDrop = event => {
+    event.preventDefault();
+  };
+
+  const drop = (event, data) => {
+    event.preventDefault();
+    var data = event.dataTransfer.getData('cell');
+    data = JSON.parse(data);
+    if (event.target.getAttribute('name') === 'sibling-dropzone') {
+      let cellId = event.target.getAttribute('id');
+      cellId = cellId.replace(/sibling-dropzone-/g, '');
+      handleAppendSibling(data, cellId);
+    }
+    if (event.target.getAttribute('name') === 'child-dropzone') {
+      handleAppendChild(data);
+    }
+    forceUpdate();
+  };
 
   useEffect(() => {
-    console.log(inputRef.current.value);
     if (document && document.getElementById(`remove${id}`)) {
       //end calculate node width
       document.getElementById(`remove${id}`).addEventListener('click', e => {
@@ -55,6 +83,7 @@ export const Cell = props => {
           )}
         >
           <div
+            id={id}
             onClick={() => {
               setIsEditing({
                 activeCell: (() => {
@@ -76,14 +105,17 @@ export const Cell = props => {
               });
             }}
             className={classNames(
-              'border main-border w-56 h-24',
+              'border main-border rounded-lg  w-56 h-24',
               !root && 'absolute above-line',
               props.cell.children.length > 0 && 'absolute below-line'
             )}
+            onDragStart={e => dragStart(e, props.cell)}
+            draggable={!root && 'true'}
           >
             <div
               className={classNames(
-                'flex items-center h-4 w-full main-border-bottom draggable',
+                'flex items-center h-4 w-full main-border-bottom',
+                !root && 'draggable',
                 editing && activeCell === id && 'main-bg'
               )}
             >
@@ -100,7 +132,7 @@ export const Cell = props => {
               ref={inputRef}
               className="relative px-2 py-2 text-xl font-semibold main-text-color"
             >
-              {name}
+              {id}
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
@@ -108,15 +140,32 @@ export const Cell = props => {
             (activeCell !== id && (
               <div
                 className={[
-                  'ml-4 opacity-0 hover:opacity-100 flex justify-center w-12 h-32 absolute top-0 right-0'
+                  'absolute opacity-0 hover:opacity-100 flex justify-center w-12 h-32 top-0 right-0 '
                 ]}
                 onClick={() => {
                   handleAddSibling(props.cell.value);
                 }}
               >
-                <Button name="add" className="absolute z-100" />
+                <Button name="add" className="absolute" />
               </div>
             ))}
+          {!root && (
+            <div
+              className="w-24 h-24 bg-blue-100 absolute right-dz"
+              name="sibling-dropzone"
+              id={`sibling-dropzone-${id}`}
+              onDrop={e => drop(e, props.cell)}
+              onDragOver={e => allowDrop(e)}
+            ></div>
+          )}
+          {!root && (
+            <div
+              className="w-56 h-12 bg-blue-100 absolute mt-24"
+              name="child-dropzone"
+              onDrop={e => drop(e)}
+              onDragOver={e => allowDrop(e)}
+            ></div>
+          )}
           {activeCell !== id && (
             <div
               className={[

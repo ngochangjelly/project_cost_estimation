@@ -18,12 +18,13 @@ const initialState = {
 };
 export const treeReducer = (state = initialState, action) => {
   const { cell } = action;
-  const parentId = cell?.value?.parentId;
-  const siblingId = cell?.value?.siblingId;
+  let parentId = cell?.value?.parentId;
+  const siblingId = cell?.value?.siblingId || action.siblingId;
   let { tree } = state;
   const parentNode = tree._search(parentId);
   const position = parentNode?.children?.length;
   const length = parentNode?.children?.length;
+  let childPos;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
       cell.value.position = getPosition(length, position);
@@ -40,7 +41,7 @@ export const treeReducer = (state = initialState, action) => {
       tree._addNode(cell, parentId);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
-      const childPos = tree._childPosition(parentId, siblingId);
+      childPos = tree?._childPosition(parentId, siblingId);
       if (length === 1) {
         parentNode.children[0].value.position = 'isFirstChild';
         cell.value.position = 'isLastChild';
@@ -52,6 +53,23 @@ export const treeReducer = (state = initialState, action) => {
       if (length > 1 && childPos !== length - 1) {
         cell.value.position = 'isChild';
       }
+      tree._addSibling(cell, parentId, siblingId);
+      return { ...state, tree };
+    case actionTypes.APPEND_SIBLING:
+      parentId = tree._search(siblingId).value.parentId;
+      childPos = tree._childPosition(parentId, siblingId);
+      if (length === 1) {
+        parentNode.children[0].value.position = 'isFirstChild';
+        cell.value.position = 'isLastChild';
+      }
+      if (length > 1 && childPos === length - 1) {
+        cell.value.position = 'isLastChild';
+        parentNode.children[length - 1].value.position = 'isChild';
+      }
+      if (length > 1 && childPos !== length - 1) {
+        cell.value.position = 'isChild';
+      }
+      tree._removeNode(cell.value.id);
       tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
     case actionTypes.REMOVE_CELL:
