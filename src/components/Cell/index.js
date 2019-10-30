@@ -83,9 +83,6 @@ export const Cell = props => {
           )}
           <div
             id={id}
-            // onClick={() => {
-            //   setActiveCell(id === activeCell ? null : id);
-            // }}
             className={classNames(
               'border main-border rounded-lg  w-56 h-24',
               !root && 'absolute above-line',
