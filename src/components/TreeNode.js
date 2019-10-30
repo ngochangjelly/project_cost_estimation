@@ -22,10 +22,7 @@ const calculateNodeWidth = id => {
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
-  const [isEditing, setIsEditing] = useState({
-    activeCell: undefined,
-    editing: false
-  });
+  const [activeCell, setActiveCell] = useState(null);
   const {
     dispatchAddChild,
     dispatchAddSibling,
@@ -81,8 +78,8 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.value?.root && (
           <Cell
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
+            activeCell={activeCell}
+            setActiveCell={setActiveCell}
             cell={tree}
             handleAddChild={handleAddChild}
             handleAddSibling={handleAddSibling}
@@ -99,8 +96,8 @@ const TreeNode = props => {
               className={classNames('flex flex-col items-center relative')}
             >
               <Cell
-                isEditing={isEditing}
-                setIsEditing={setIsEditing}
+                activeCell={activeCell}
+                setActiveCell={setActiveCell}
                 key={key}
                 cell={treeNode}
                 handleAddChild={handleAddChild}

@@ -22,8 +22,7 @@ export const Cell = props => {
     handleAppendSibling,
     nodeWidth
   } = props;
-  const { isEditing, setIsEditing } = props;
-  const { activeCell, editing } = isEditing;
+  const { activeCell, setActiveCell } = props;
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = React.createRef();
   const dragStart = (event, cell) => {
@@ -51,33 +50,17 @@ export const Cell = props => {
     setIsDragging(false);
     forceUpdate();
   };
-
-  useEffect(() => {
-    if (document && document.getElementById(`remove${id}`)) {
-      //end calculate node width
-      document.getElementById(`remove${id}`).addEventListener('click', e => {
-        handleRemoveCell(props.cell.value);
-        e.stopImmediatePropagation();
-      });
+  const handleActive = e => {
+    const currentId = e.target.getAttribute('id');
+    if (currentId.includes(id)) {
+      if (!activeCell) {
+        setActiveCell(id);
+      }
+      if (activeCell) {
+        setActiveCell(null);
+      }
     }
-    document.getElementById('root').addEventListener('click', e => {
-      const clickInside = onClickInside(id, 'root');
-      let onClickRemoveBtn;
-      if (document && document.getElementById(`remove${id}`)) {
-        onClickRemoveBtn = onClickInside(`remove${id}`, 'root');
-      }
-      if (
-        !clickInside ||
-        (clickInside && !onClickRemoveBtn && editing === false)
-      ) {
-        setIsEditing({
-          activeCell: undefined,
-          editing: false
-        });
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editing, id, setIsEditing]);
+  };
 
   return (
     <div className={classNames(getConnectLine(position))}>
@@ -90,7 +73,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-12 h-32 left-dz bg-blue-100 absolute left-0 top-0'
+                'w-24 h-32 left-dz bg-blue-100 absolute left-0 top-0'
               )}
               name="left-sibling-dropzone"
               id={`left-sibling-dropzone-${id}`}
@@ -100,26 +83,9 @@ export const Cell = props => {
           )}
           <div
             id={id}
-            onClick={() => {
-              setIsEditing({
-                activeCell: (() => {
-                  if (id === activeCell) {
-                    return undefined;
-                  }
-                  if (id !== activeCell) {
-                    return id;
-                  }
-                })(),
-                editing: (() => {
-                  if (editing === true || activeCell !== id) {
-                    return true;
-                  }
-                  if (editing === true && activeCell === id) {
-                    return false;
-                  }
-                })()
-              });
-            }}
+            // onClick={() => {
+            //   setActiveCell(id === activeCell ? null : id);
+            // }}
             className={classNames(
               'border main-border rounded-lg  w-56 h-24',
               !root && 'absolute above-line',
@@ -132,21 +98,21 @@ export const Cell = props => {
               className={classNames(
                 'flex items-center h-4 w-full main-border-bottom',
                 !root && 'draggable',
-                editing && activeCell === id && 'main-bg'
+                activeCell === id && 'main-bg'
               )}
             >
               <IoIosMore
                 className={classNames(
                   'text-4xl font-semibold pl-2',
-                  editing && id === activeCell
-                    ? 'text-white'
-                    : 'main-text-color'
+                  id === activeCell ? 'text-white' : 'main-text-color'
                 )}
               />
             </div>
             <div
               ref={inputRef}
               className="relative px-2 py-2 text-xl font-semibold main-text-color"
+              id={`edit-${id}`}
+              onClick={e => handleActive(e)}
             >
               {id}
             </div>
@@ -168,7 +134,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-12 h-32 right-dz bg-blue-100 absolute top-0 right-0'
+                'w-24 h-32 right-dz bg-blue-100 absolute top-0 right-0'
               )}
               name="right-sibling-dropzone"
               id={`right-sibling-dropzone-${id}`}
@@ -189,17 +155,18 @@ export const Cell = props => {
             </div>
           )}
           {/* toggle remove button on hover cell but not the root cell */}
-          {activeCell === id && editing === true && !root && (
+          {activeCell === id && !root && (
             <div
               id={`remove${id}`}
               className={classNames(
                 'absolute bottom-0 right-0 flex justify-center w-56 h-8',
-                editing === true && activeCell === id
-                  ? 'opacity-1'
-                  : 'opacity-0'
+                activeCell === id ? 'opacity-1' : 'opacity-0'
               )}
+              onClick={() => {
+                handleRemoveCell(props.cell.value);
+              }}
             >
-              <Button name="minus" />
+              <Button id={`remove${id}`} name="minus" />
             </div>
           )}
         </div>
