@@ -38,14 +38,15 @@ export const Cell = props => {
     event.preventDefault();
     var data = event.dataTransfer.getData('cell');
     data = JSON.parse(data);
+    let cellId = event.target.getAttribute('id');
     if (event.target.getAttribute('name') === 'right-sibling-dropzone') {
       event.target.style.className = 'is-dragging';
-      let cellId = event.target.getAttribute('id');
       cellId = cellId.replace(/right-sibling-dropzone-/g, '');
-      handleAppendSibling(data, cellId);
+      handleAppendSibling('right', data, cellId);
     }
-    if (event.target.getAttribute('name') === 'child-dropzone') {
-      handleAppendChild(data);
+    if (event.target.getAttribute('name') === 'left-sibling-dropzone') {
+      cellId = cellId.replace(/left-sibling-dropzone-/g, '');
+      handleAppendSibling('left', data, cellId);
     }
     setIsDragging(false);
     forceUpdate();

@@ -14,8 +14,21 @@ export const removeCell = cell => ({
   cell: cell
 });
 
-export const appendSibling = (cell, siblingId) => ({
-  type: actionTypes.APPEND_SIBLING,
-  cell: cell,
-  siblingId: siblingId
-});
+export const appendSibling = (position, cell, siblingId) => {
+  switch (position) {
+    case 'right':
+      return {
+        type: actionTypes.APPEND_RIGHT_SIBLING,
+        cell: cell,
+        siblingId: siblingId
+      };
+    case 'left':
+      return {
+        type: actionTypes.APPEND_LEFT_SIBLING,
+        cell: cell,
+        siblingId: siblingId
+      };
+    default:
+      return null;
+  }
+};

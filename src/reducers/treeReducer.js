@@ -1,6 +1,7 @@
 import * as actionTypes from '../constant';
 import { initTree } from '../constant/tree';
 import { getPosition } from '../utils/getPosition';
+import * as positionTypes from '../constant/position';
 
 const ChartTree = initTree();
 //default root node to tree
@@ -24,17 +25,17 @@ export const treeReducer = (state = initialState, action) => {
   const parentNode = tree._search(parentId);
   const position = parentNode?.children?.length;
   const length = parentNode?.children?.length;
-  let childPos;
+  let childPos, cellPos;
   switch (action.type) {
     case actionTypes.ADD_CHILD:
       cell.value.position = getPosition(length, position);
       //toggle previous sibling node into isChild
       if (parentNode.children.length > 1) {
-        parentNode.children[length - 1].value.position = 'isChild';
+        parentNode.children[length - 1].value.position = positionTypes.isChild;
       }
       //toggle previous sibling to be first node if there are 2 siblings
       if (length === 1) {
-        parentNode.children[0].value.position = 'isFirstChild';
+        parentNode.children[0].value.position = positionTypes.isFirstChild;
       }
       //toggle parent hasChildren field to true
       parentNode.value.hasChildren = true;
@@ -43,47 +44,91 @@ export const treeReducer = (state = initialState, action) => {
     case actionTypes.ADD_SIBLING:
       childPos = tree?._childPosition(parentId, siblingId);
       if (length === 1) {
-        parentNode.children[0].value.position = 'isFirstChild';
-        cell.value.position = 'isLastChild';
+        parentNode.children[0].value.position = positionTypes.isFirstChild;
+        cell.value.position = positionTypes.isLastChild;
       }
       if (length > 1 && childPos === length - 1) {
-        cell.value.position = 'isLastChild';
-        parentNode.children[length - 1].value.position = 'isChild';
+        cell.value.position = positionTypes.isLastChild;
+        parentNode.children[length - 1].value.position = positionTypes.isChild;
       }
       if (length > 1 && childPos !== length - 1) {
-        cell.value.position = 'isChild';
+        cell.value.position = positionTypes.isChild;
       }
-      tree._addSibling(cell, parentId, siblingId);
+      tree._addSibling(cell, parentId, siblingId, 'right');
       return { ...state, tree };
 
-    case actionTypes.APPEND_SIBLING:
+    case actionTypes.APPEND_RIGHT_SIBLING:
       parentId = tree._search(siblingId).value.parentId;
       childPos = tree._childPosition(parentId, siblingId);
-      const cellPos = tree._childPosition(parentId, cell.value.id);
-      if (cellPos === 0 && childPos !== length - 1) {
-        parentNode.children[1].value.position = 'isFirstChild';
-        cell.value.position = 'isChild';
+      cellPos = tree._childPosition(parentId, cell.value.id);
+      if (cellPos !== childPos + 1 && cellPos !== childPos) {
+        if (cellPos === 0 && childPos !== length - 1) {
+          parentNode.children[1].value.position = positionTypes.isFirstChild;
+          cell.value.position = positionTypes.isChild;
+        }
+        if (cellPos === 0 && childPos === length - 1 && length === 2) {
+          parentNode.children[1].value.position = positionTypes.isFirstChild;
+          cell.value.position = positionTypes.isLastChild;
+        }
+        if (cellPos === 0 && childPos === length - 1 && length > 2) {
+          parentNode.children[1].value.position = positionTypes.isFirstChild;
+          parentNode.children[length - 1].value.position =
+            positionTypes.isChild;
+          cell.value.position = positionTypes.isLastChild;
+        }
+        if (cellPos !== 0 && childPos === length - 1) {
+          cell.value.position = positionTypes.isLastChild;
+          parentNode.children[length - 2].value.position =
+            positionTypes.isChild;
+        }
+        if (cellPos === length - 1) {
+          parentNode.children[length - 2].value.position =
+            positionTypes.isLastChild;
+          cell.value.position = positionTypes.isChild;
+        }
+        if (
+          length > 2 &&
+          cellPos !== 0 &&
+          cellPos !== length - 1 &&
+          childPos === length - 1
+        ) {
+          cell.value.position = positionTypes.isLastChild;
+          parentNode.children[length - 1].value.position =
+            positionTypes.isChild;
+        }
+        tree._removeNode(cell.value.id);
+        tree._addSibling(cell, parentId, siblingId, 'right');
       }
-      if (cellPos === 0 && childPos === length - 1) {
-        parentNode.children[1].value.position = 'isFirstChild';
-        parentNode.children[length - 1].value.position = 'isChild';
-        cell.value.position = 'isLastChild';
+      return { ...state, tree };
+
+    case actionTypes.APPEND_LEFT_SIBLING:
+      parentId = tree._search(siblingId).value.parentId;
+      childPos = tree._childPosition(parentId, siblingId);
+      cellPos = tree._childPosition(parentId, cell.value.id);
+      if (cellPos !== childPos - 1 && childPos !== cellPos) {
+        if (childPos === 0 && cellPos !== length - 1) {
+          cell.value.position = positionTypes.isFirstChild;
+          parentNode.children[0].value.position = positionTypes.isChild;
+        }
+
+        if (childPos === 0 && cellPos === length - 1) {
+          cell.value.position = positionTypes.isFirstChild;
+          parentNode.children[0].value.position = positionTypes.isChild;
+          parentNode.children[length - 2].value.position =
+            positionTypes.isLastChild;
+        }
+        if (cellPos === 0 && childPos === length - 1) {
+          cell.value.position = positionTypes.isChild;
+          parentNode.children[1].value.position = positionTypes.isFirstChild;
+        }
+        if (childPos !== 0 && cellPos === length - 1) {
+          cell.value.position = positionTypes.isChild;
+          parentNode.children[childPos].value.position =
+            positionTypes.isLastChild;
+        }
+        tree._removeNode(cell.value.id);
+        tree._addSibling(cell, parentId, siblingId, 'left');
       }
-      if (cellPos === length - 1) {
-        parentNode.children[length - 2].value.position = 'isLastChild';
-        cell.value.position = 'isChild';
-      }
-      if (
-        length > 2 &&
-        cellPos !== 0 &&
-        cellPos !== length - 1 &&
-        childPos === length - 1
-      ) {
-        cell.value.position = 'isLastChild';
-        parentNode.children[length - 1].value.position = 'isChild';
-      }
-      tree._removeNode(cell.value.id);
-      tree._addSibling(cell, parentId, siblingId);
       return { ...state, tree };
 
     case actionTypes.REMOVE_CELL:
@@ -91,9 +136,10 @@ export const treeReducer = (state = initialState, action) => {
       const parentLength = tree._search(cell.parentId).children.length;
       //is cell is first
       if (tree._search(cell.parentId).children.length > 1) {
-        tree._search(cell.parentId).children[0].value.position = 'isFirstChild';
+        tree._search(cell.parentId).children[0].value.position =
+          positionTypes.isFirstChild;
         tree._search(cell.parentId).children[parentLength - 1].value.position =
-          'isLastChild';
+          positionTypes.isLastChild;
       }
       //if cell if first child in 2-child-array
       if (tree._search(cell.parentId).children.length === 1) {

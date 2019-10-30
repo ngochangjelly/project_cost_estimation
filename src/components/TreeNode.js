@@ -65,9 +65,9 @@ const TreeNode = props => {
     forceUpdate();
   };
 
-  const handleAppendSibling = (data, siblingId) => {
+  const handleAppendSibling = (position, data, siblingId) => {
     let newCell = data;
-    dispatchAppendSibling(newCell, siblingId);
+    dispatchAppendSibling(position, newCell, siblingId);
     forceUpdate();
   };
 
@@ -135,8 +135,8 @@ const mapDispatchToProps = dispatch => ({
   dispatchRemoveCell: cell => {
     dispatch(removeCell(cell));
   },
-  dispatchAppendSibling: (cell, id) => {
-    dispatch(appendSibling(cell, id));
+  dispatchAppendSibling: (position, cell, id) => {
+    dispatch(appendSibling(position, cell, id));
   }
 });
 

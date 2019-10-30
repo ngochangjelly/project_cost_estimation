@@ -31,19 +31,35 @@ export class Tree {
     });
   }
 
-  _addSibling(value, parentValue, siblingValue) {
-    this._traverse(node => {
-      if (node.value.id === parentValue) {
-        //find its left sibling position
-        let siblingPosition;
-        node.children.map((n, key) => {
-          if (n.value.id === siblingValue) {
-            siblingPosition = key;
-          }
-        });
-        return node.children.splice(siblingPosition + 1, 0, value);
-      }
-    });
+  _addSibling(value, parentValue, siblingValue, position) {
+    if (position === 'right') {
+      this._traverse(node => {
+        if (node.value.id === parentValue) {
+          //find its left sibling position
+          let siblingPosition;
+          node.children.map((n, key) => {
+            if (n.value.id === siblingValue) {
+              siblingPosition = key;
+            }
+          });
+          return node.children.splice(siblingPosition + 1, 0, value);
+        }
+      });
+    }
+    if (position === 'left') {
+      this._traverse(node => {
+        if (node.value.id === parentValue) {
+          //find its left sibling position
+          let siblingPosition;
+          node.children.map((n, key) => {
+            if (n.value.id === siblingValue) {
+              siblingPosition = key;
+            }
+          });
+          return node.children.splice(siblingPosition, 0, value);
+        }
+      });
+    }
   }
 
   _removeNode(value) {
