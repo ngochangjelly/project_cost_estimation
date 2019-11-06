@@ -33,10 +33,6 @@ export const Cell = props => {
     const currentArea = event.target.getAttribute('id');
     let id;
     if (currentArea.includes('sibling-dropzone')) {
-      // id =
-      //   currentArea.replace(/right-sibling-dropzone-/g, '') ||
-      //   currentArea.replace(/left-sibling-dropzone-/g, '');
-      // setOnHover(id);
       setOnHover(currentArea);
     }
     event.preventDefault();
@@ -51,7 +47,6 @@ export const Cell = props => {
       setOnHover(null);
     }
   };
-  console.log(onHover);
 
   const drop = (event, data) => {
     event.preventDefault();
@@ -62,12 +57,19 @@ export const Cell = props => {
       event.target.style.className = 'is-dragging';
       cellId = cellId.replace(/right-sibling-dropzone-/g, '');
       handleAppendSibling('right', data, cellId);
+      //remove dropzone transition on hover css
+      const cellsCollection = document.getElementsByClassName('cell');
+      let cellArr = [...cellsCollection];
+      cellArr.map(v => {
+        v.classList.remove('on-right-dragged-over', 'on-left-dragged-over');
+      });
     }
     if (event.target.getAttribute('name') === 'left-sibling-dropzone') {
       cellId = cellId.replace(/left-sibling-dropzone-/g, '');
       handleAppendSibling('left', data, cellId);
     }
     setIsDragging(false);
+    setOnHover(null);
     forceUpdate();
   };
   const handleActive = e => {
@@ -90,7 +92,7 @@ export const Cell = props => {
       <div className={classNames('relative')}>
         <div
           className={classNames(
-            'cell-width mt-12 h-32 flex justify-center relative',
+            'cell cell-width mt-12 h-32 flex justify-center relative',
             onHover?.includes(id) &&
               onHover?.includes('right') &&
               'on-right-dragged-over',
