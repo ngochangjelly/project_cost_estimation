@@ -13,6 +13,10 @@ body {
 .cell-width {
   width: 450px;
 }
+/* .cell-width:hover {
+  transform: translateX(40px);
+  -webkit-transform: translateX(40px);
+} */
 .main-bg {
   background-color: #2f7fef;
 }
@@ -41,6 +45,7 @@ body {
 /*vertical lines to connect among cells */
 .above-line::after {
   content: '';
+  z-index: 100;
   position: absolute;
   z-index: -1;
   height: 48px;
@@ -52,6 +57,7 @@ body {
 
 .below-line::before {
   content: '';
+  z-index: 100;
   position: absolute;
   z-index: -1;
   height: 36px;
@@ -63,6 +69,7 @@ body {
 /* horizontal line to connect between cells */
 .left-connect-line::before {
   content: '';
+  z-index: 100;
   position: absolute;
   left: 0;
   /* half of width w-64 128px */
@@ -72,15 +79,16 @@ body {
 }
 .parent-left-connect-line::before {
   content: '';
+  z-index: 100;
   position: absolute;
   left: 0;
-  /* half of width w-64 128px */
   right: 50%;
   height: 1px;
   background-color: #2f7fef;
 }
 .right-connect-line::before {
   content: '';
+  z-index: 100;
   position: absolute;
   left: 50%;
   right: 0;
@@ -89,6 +97,7 @@ body {
 }
 .full-connect-line::before {
   content: '';
+  z-index: 100;
   position: absolute;
   left: 0;
   right: 0;
@@ -99,8 +108,9 @@ body {
 .draggable {
   cursor: move;
 }
-.drop-zone {
-  pointer-events: none;
+.dropzone {
+  /* pointer-events: none; */
+  /* opacity: 0; */
 }
 .right-dz {
   margin-top: 48px;
@@ -108,6 +118,13 @@ body {
 .left-dz {
   margin-top: 48px;
 }
-.is-dragging {
-  transform: translateX(20px);
+.on-right-dragged-over {
+  -webkit-transform: translate(-20px, -1px);
+  -moz-transform: translate(-20px, -1px);
+  transform: translate(-20px, -1px);
+}
+.on-left-dragged-over {
+  -webkit-transform: translate(20px, 1px);
+  -moz-transform: translate(20px, 1px);
+  transform: translate(20px, 1px);
 }

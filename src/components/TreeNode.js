@@ -23,12 +23,14 @@ const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree } = props;
   const [activeCell, setActiveCell] = useState(null);
+
   const {
     dispatchAddChild,
     dispatchAddSibling,
     dispatchRemoveCell,
     dispatchAppendSibling
   } = props;
+
   const handleAddChild = cell => {
     const id = uuidv4();
     let newCell = {

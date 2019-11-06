@@ -13,25 +13,45 @@ function useForceUpdate() {
 }
 export const Cell = props => {
   const forceUpdate = useForceUpdate();
-  const { name, id, root, position, hasChildren } = props.cell.value;
+  const { name, id, root, position } = props.cell.value;
   const {
     handleAddChild,
     handleAddSibling,
     handleRemoveCell,
     handleAppendChild,
-    handleAppendSibling,
-    nodeWidth
+    handleAppendSibling
   } = props;
   const { activeCell, setActiveCell } = props;
   const [isDragging, setIsDragging] = useState(false);
+  const [onHover, setOnHover] = useState(null);
   const inputRef = React.createRef();
   const dragStart = (event, cell) => {
     setIsDragging(true);
     event.dataTransfer.setData('cell', JSON.stringify(cell));
   };
   const allowDrop = event => {
+    const currentArea = event.target.getAttribute('id');
+    let id;
+    if (currentArea.includes('sibling-dropzone')) {
+      // id =
+      //   currentArea.replace(/right-sibling-dropzone-/g, '') ||
+      //   currentArea.replace(/left-sibling-dropzone-/g, '');
+      // setOnHover(id);
+      setOnHover(currentArea);
+    }
     event.preventDefault();
   };
+  const handleDragLeave = event => {
+    const currentArea = event.target.getAttribute('id');
+    let id;
+    if (currentArea.includes('sibling-dropzone')) {
+      id =
+        currentArea.replace(/right-sibling-dropzone-/g, '') ||
+        currentArea.replace(/left-sibling-dropzone-/g, '');
+      setOnHover(null);
+    }
+  };
+  console.log(onHover);
 
   const drop = (event, data) => {
     event.preventDefault();
@@ -59,6 +79,9 @@ export const Cell = props => {
       if (activeCell) {
         setActiveCell(null);
       }
+      if (activeCell !== id) {
+        setActiveCell(id);
+      }
     }
   };
 
@@ -67,13 +90,19 @@ export const Cell = props => {
       <div className={classNames('relative')}>
         <div
           className={classNames(
-            'cell-width mt-12 h-32 flex justify-center relative'
+            'cell-width mt-12 h-32 flex justify-center relative',
+            onHover?.includes(id) &&
+              onHover?.includes('right') &&
+              'on-right-dragged-over',
+            onHover?.includes(id) &&
+              onHover?.includes('left') &&
+              'on-left-dragged-over'
           )}
         >
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 left-dz bg-blue-100 absolute left-0 top-0'
+                'w-24 h-32 left-dz bg-blue-100 absolute left-0 top-0 dropzone'
               )}
               name="left-sibling-dropzone"
               id={`left-sibling-dropzone-${id}`}
@@ -111,7 +140,7 @@ export const Cell = props => {
               id={`edit-${id}`}
               onClick={e => handleActive(e)}
             >
-              {id}
+              {name}
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
@@ -131,12 +160,13 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 right-dz bg-blue-100 absolute top-0 right-0'
+                'w-24 h-32 right-dz bg-blue-100 absolute top-0 right-0 dropzone'
               )}
               name="right-sibling-dropzone"
               id={`right-sibling-dropzone-${id}`}
               onDrop={e => drop(e, props.cell)}
               onDragOver={e => allowDrop(e)}
+              onDragLeave={e => handleDragLeave(e)}
             ></div>
           )}
           {activeCell !== id && (
