@@ -119,12 +119,12 @@ body {
   margin-top: 48px;
 }
 .on-right-dragged-over {
-  -webkit-transform: translate(-20px, -1px);
-  -moz-transform: translate(-20px, -1px);
-  transform: translate(-20px, -1px);
+  -webkit-transform: translate(-40px, -1px);
+  -moz-transform: translate(-40px, -1px);
+  transform: translate(-40px, -1px);
 }
 .on-left-dragged-over {
-  -webkit-transform: translate(20px, 1px);
-  -moz-transform: translate(20px, 1px);
-  transform: translate(20px, 1px);
+  -webkit-transform: translate(40px, 1px);
+  -moz-transform: translate(40px, 1px);
+  transform: translate(40px, 1px);
 }

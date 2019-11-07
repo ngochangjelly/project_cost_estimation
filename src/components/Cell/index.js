@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
-import { onClickInside } from '../../utils/detectElement';
 let classNames = require('classnames');
 
 // create your forceUpdate hook
@@ -104,7 +103,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 left-dz bg-blue-100 absolute left-0 top-0 dropzone'
+                'w-24 h-32 left-dz bg-red absolute left-0 top-0 dropzone bg-gray-100'
               )}
               name="left-sibling-dropzone"
               id={`left-sibling-dropzone-${id}`}
@@ -162,7 +161,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 right-dz bg-blue-100 absolute top-0 right-0 dropzone'
+                'w-24 h-32 right-dz bg-red absolute top-0 right-0 dropzone bg-gray-100'
               )}
               name="right-sibling-dropzone"
               id={`right-sibling-dropzone-${id}`}

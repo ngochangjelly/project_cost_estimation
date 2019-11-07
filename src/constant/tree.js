@@ -2,6 +2,9 @@ export class Tree {
   constructor(root) {
     this._root = root || null;
   }
+  _initTreeFromLocalStorage(initialTree) {
+    this._root = initialTree;
+  }
 
   _traverse(callback) {
     function goThrough(node) {

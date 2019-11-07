@@ -2,18 +2,26 @@ import * as actionTypes from '../constant';
 import { initTree } from '../constant/tree';
 import { getPosition } from '../utils/getPosition';
 import * as positionTypes from '../constant/position';
+const localStorage = require('../utils/localStorage');
 
-const ChartTree = initTree();
-//default root node to tree
-ChartTree._addNode({
-  group: 'main',
-  id: 'te83nwko7b',
-  name: 'Root',
-  root: true,
-  hasChildren: false
-});
+let ChartTree;
+let tree;
+tree = initTree();
 
-const tree = ChartTree;
+if (!localStorage.check()) {
+  ChartTree = {
+    group: 'main',
+    id: 'te83nwko7b',
+    name: 'Root',
+    root: true,
+    hasChildren: false
+  };
+  localStorage.set(ChartTree);
+} else {
+  ChartTree = localStorage.get();
+}
+tree._initTreeFromLocalStorage(ChartTree._root);
+
 const initialState = {
   tree
 };
@@ -40,6 +48,7 @@ export const treeReducer = (state = initialState, action) => {
       //toggle parent hasChildren field to true
       parentNode.value.hasChildren = true;
       tree._addNode(cell, parentId);
+      localStorage.update(tree);
       return { ...state, tree };
     case actionTypes.ADD_SIBLING:
       childPos = tree?._childPosition(parentId, siblingId);
@@ -55,6 +64,7 @@ export const treeReducer = (state = initialState, action) => {
         cell.value.position = positionTypes.isChild;
       }
       tree._addSibling(cell, parentId, siblingId, 'right');
+      localStorage.update(tree);
       return { ...state, tree };
 
     case actionTypes.APPEND_RIGHT_SIBLING:
@@ -99,6 +109,7 @@ export const treeReducer = (state = initialState, action) => {
         tree._removeNode(cell.value.id);
         tree._addSibling(cell, parentId, siblingId, 'right');
       }
+      localStorage.update(tree);
       return { ...state, tree };
 
     case actionTypes.APPEND_LEFT_SIBLING:
@@ -129,6 +140,7 @@ export const treeReducer = (state = initialState, action) => {
         tree._removeNode(cell.value.id);
         tree._addSibling(cell, parentId, siblingId, 'left');
       }
+      localStorage.update(tree);
       return { ...state, tree };
 
     case actionTypes.REMOVE_CELL:
@@ -149,6 +161,7 @@ export const treeReducer = (state = initialState, action) => {
       if (tree._search(cell.parentId).children.length === 1) {
         tree._search(cell.parentId).children[0].value.position = '';
       }
+      localStorage.update(tree);
       return { ...state, tree };
     default:
       return state;
