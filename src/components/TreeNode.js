@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Cell } from './Cell';
 import { connect } from 'react-redux';
 import {
   addChild,
+  appendChild,
   addSibling,
   removeCell,
   appendSibling
@@ -12,6 +13,7 @@ var classNames = require('classnames');
 
 //create your forceUpdate hook
 function useForceUpdate() {
+  console.log('force update');
   const [value, set] = useState(true); //boolean state
   return () => set(value => !value); // toggle the state to force render
 }
@@ -26,6 +28,7 @@ const TreeNode = props => {
 
   const {
     dispatchAddChild,
+    dispatchAppendChild,
     dispatchAddSibling,
     dispatchRemoveCell,
     dispatchAppendSibling
@@ -44,6 +47,12 @@ const TreeNode = props => {
       children: []
     };
     dispatchAddChild(newCell);
+    forceUpdate();
+  };
+
+  const handleAppendChild = (cell, parentId) => {
+    //prevent dropping at the same cell
+    cell.value.id !== parentId && dispatchAppendChild(cell, parentId);
     forceUpdate();
   };
   const handleAddSibling = cell => {
@@ -103,6 +112,7 @@ const TreeNode = props => {
                 key={key}
                 cell={treeNode}
                 handleAddChild={handleAddChild}
+                handleAppendChild={handleAppendChild}
                 handleAddSibling={handleAddSibling}
                 handleAppendSibling={handleAppendSibling}
                 handleRemoveCell={handleRemoveCell}
@@ -113,6 +123,7 @@ const TreeNode = props => {
                   id={treeNode.value.id}
                   tree={treeNode}
                   dispatchAddChild={dispatchAddChild}
+                  dispatchAppendChild={dispatchAppendChild}
                   dispatchAddSibling={dispatchAddSibling}
                   dispatchRemoveCell={dispatchRemoveCell}
                   dispatchAppendSibling={dispatchAppendSibling}
@@ -127,6 +138,9 @@ const TreeNode = props => {
 const mapDispatchToProps = dispatch => ({
   dispatchAddChild: cell => {
     dispatch(addChild(cell));
+  },
+  dispatchAppendChild: (cell, parentId) => {
+    dispatch(appendChild(cell, parentId));
   },
   dispatchAddSibling: cell => {
     dispatch(addSibling(cell));

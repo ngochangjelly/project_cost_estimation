@@ -4,6 +4,12 @@ export const addChild = cell => ({
   cell: cell
 });
 
+export const appendChild = (cell, parentId) => ({
+  type: actionTypes.APPEND_CHILD,
+  parentId: parentId,
+  cell: cell
+});
+
 export const addSibling = cell => ({
   type: actionTypes.ADD_SIBLING,
   cell: cell

@@ -5,23 +5,32 @@ import * as positionTypes from '../constant/position';
 const localStorage = require('../utils/localStorage');
 
 let ChartTree;
-let tree;
-tree = initTree();
 
-if (!localStorage.check()) {
-  ChartTree = {
-    group: 'main',
-    id: 'te83nwko7b',
-    name: 'Root',
-    root: true,
-    hasChildren: false
-  };
-  localStorage.set(ChartTree);
-} else {
-  ChartTree = localStorage.get();
-}
-tree._initTreeFromLocalStorage(ChartTree._root);
-
+let tree = initTree();
+// console.log(!localStorage.check());
+// if (!localStorage.check() === true) {
+//   ChartTree = {
+//     group: 'main',
+//     id: 'te83nwko7b',
+//     name: 'Root',
+//     root: true,
+//     hasChildren: false,
+//     children: []
+//   };
+//   localStorage.set(ChartTree);
+//   tree._addNode(ChartTree);
+// } else {
+//   ChartTree = localStorage.get();
+//   tree._addNode(ChartTree._root);
+// }
+tree._addNode({
+  group: 'main',
+  id: 'te83nwko7b',
+  name: 'Root',
+  root: true,
+  hasChildren: false,
+  children: []
+});
 const initialState = {
   tree
 };
@@ -30,7 +39,7 @@ export const treeReducer = (state = initialState, action) => {
   let parentId = cell?.value?.parentId;
   const siblingId = cell?.value?.siblingId || action.siblingId;
   let { tree } = state;
-  const parentNode = tree._search(parentId);
+  let parentNode = tree?._search(parentId);
   const position = parentNode?.children?.length;
   const length = parentNode?.children?.length;
   let childPos, cellPos;
@@ -50,8 +59,42 @@ export const treeReducer = (state = initialState, action) => {
       tree._addNode(cell, parentId);
       localStorage.update(tree);
       return { ...state, tree };
+
+    case actionTypes.APPEND_CHILD:
+      const cellPos = cell.value.position;
+      tree._removeNode(cell.value.id);
+      cell.value.parentId = action.parentId;
+      cell.value.position = '';
+      tree._addNode(cell, action.parentId);
+      tree._search(action.parentId).value.hasChildren = true;
+      //handle position of target's parent node
+      const grandparent = tree._search(
+        tree._search(action.parentId).value.parentId
+      );
+      const grandLength = grandparent.children.length;
+      if (grandLength === 1) {
+        grandparent.children[0].value.position = '';
+      }
+      //handle position of the dragged cell
+      if (length - 1 === 1) {
+        parentNode.children[0].position = '';
+      }
+      childPos = tree._childPosition(parentId, cell.value.id);
+      if (length - 1 > 1 && cellPos === positionTypes.isFirstChild) {
+        parentNode.children[0].value.position = positionTypes.isFirstChild;
+      }
+      if (length - 1 > 1 && cellPos === positionTypes.isLastChild) {
+        if (parentNode) {
+          parentNode.children[length - 2].value.position =
+            positionTypes.isLastChild;
+        }
+      }
+      //end of position handling
+
+      localStorage.update(tree);
+      return { ...state, tree };
+
     case actionTypes.ADD_SIBLING:
-      childPos = tree?._childPosition(parentId, siblingId);
       if (length === 1) {
         parentNode.children[0].value.position = positionTypes.isFirstChild;
         cell.value.position = positionTypes.isLastChild;
@@ -145,7 +188,7 @@ export const treeReducer = (state = initialState, action) => {
 
     case actionTypes.REMOVE_CELL:
       tree._removeNode(cell.id);
-      const parentLength = tree._search(cell.parentId).children.length;
+      const parentLength = tree?._search(cell.parentId)?.children.length;
       //is cell is first
       if (tree._search(cell.parentId).children.length > 1) {
         tree._search(cell.parentId).children[0].value.position =

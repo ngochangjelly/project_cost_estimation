@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
+import { onClickInside } from '../../utils/detectElement';
 let classNames = require('classnames');
 
 // create your forceUpdate hook
@@ -30,33 +31,46 @@ export const Cell = props => {
   };
   const allowDrop = event => {
     const currentArea = event.target.getAttribute('id');
+    const name = event.target.getAttribute('name');
     let id;
-    if (currentArea.includes('sibling-dropzone')) {
+    if (currentArea?.includes('sibling-dropzone')) {
       setOnHover(currentArea);
+    }
+    if (name === 'child-dropzone') {
+      setOnHover(`child-dropzone-${id}`);
     }
     event.preventDefault();
   };
+
   const handleDragLeave = event => {
     const currentArea = event.target.getAttribute('id');
-    let id;
     if (currentArea.includes('sibling-dropzone')) {
-      id =
-        currentArea.replace(/right-sibling-dropzone-/g, '') ||
-        currentArea.replace(/left-sibling-dropzone-/g, '');
+      setOnHover(null);
+    }
+    if (event.target.getAttribute('name') === 'child-dropzone') {
       setOnHover(null);
     }
   };
 
   const drop = (event, data) => {
     event.preventDefault();
+    const targetCell = document.getElementById(id);
+    const dropCell = event.target;
+    let cellId = dropCell.getAttribute('id');
     var data = event.dataTransfer.getData('cell');
     data = JSON.parse(data);
-    let cellId = event.target.getAttribute('id');
+    if (
+      targetCell.hasChildNodes(dropCell) &&
+      dropCell.getAttribute('name') !== 'right-sibling-dropzone' &&
+      dropCell.getAttribute('name') !== 'left-sibling-dropzone'
+    ) {
+      cellId = cellId.replace(/edit-/g, '') || cellId;
+      handleAppendChild(data, cellId);
+    }
     if (event.target.getAttribute('name') === 'right-sibling-dropzone') {
       event.target.style.className = 'is-dragging';
       cellId = cellId.replace(/right-sibling-dropzone-/g, '');
       handleAppendSibling('right', data, cellId);
-      //remove dropzone transition on hover css
       const cellsCollection = document.getElementsByClassName('cell');
       let cellArr = [...cellsCollection];
       cellArr.map(v => {
@@ -113,13 +127,18 @@ export const Cell = props => {
           )}
           <div
             id={id}
+            name="child-dropzone"
             className={classNames(
-              'border main-border rounded-lg  w-56 h-24',
+              'border main-border rounded-lg w-56 h-24',
               !root && 'absolute above-line',
               props.cell.children.length > 0 && 'absolute below-line'
             )}
             onDragStart={e => dragStart(e, props.cell)}
             draggable={!root && 'true'}
+            onDrop={e => {
+              drop(e, props.cell);
+            }}
+            onDragOver={e => allowDrop(e)}
           >
             <div
               className={classNames(
@@ -141,7 +160,7 @@ export const Cell = props => {
               id={`edit-${id}`}
               onClick={e => handleActive(e)}
             >
-              {name}
+              {id}
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}

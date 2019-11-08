@@ -2,8 +2,9 @@ export class Tree {
   constructor(root) {
     this._root = root || null;
   }
-  _initTreeFromLocalStorage(initialTree) {
-    this._root = initialTree;
+
+  _buildTree(initialTree) {
+    this._root = initTree;
   }
 
   _traverse(callback) {
@@ -78,7 +79,7 @@ export class Tree {
   _search(value) {
     let returnNode = 'Not Found';
     this._traverse(node => {
-      if (node.value.id === value) {
+      if (node && node.value.id === value) {
         returnNode = node;
       }
     });
@@ -89,13 +90,14 @@ export class Tree {
     const parentNode =
       typeof parentValue === 'string' ? this._search(parentValue) : parentValue;
     let leafsRet = [];
-    if (parentValue.children && !parentValue.children.length) {
+    if (parentValue?.children && !parentValue.children.length) {
       return parentValue;
     }
 
-    parentNode.children.forEach(child => {
-      leafsRet.push(this._displayLeafs(child));
-    });
+    parentNode &&
+      parentNode.children.forEach(child => {
+        leafsRet.push(this._displayLeafs(child));
+      });
 
     return leafsRet.flat();
   }
