@@ -8,7 +8,6 @@ body {
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 0 5vw;
 }
 .cell-width {
   width: 450px;
@@ -127,4 +126,17 @@ body {
   -webkit-transform: translate(40px, 1px);
   -moz-transform: translate(40px, 1px);
   transform: translate(40px, 1px);
+}
+/* buttn color */
+button {
+  background-color: #e8eff7;
+  color: #768ba7;
+  border-radius: 10px;
+}
+button:focus {
+  outline: none;
+}
+/* pannel estimation */
+.estimation-panel {
+  background-color: #4d607c;
 }

@@ -66,6 +66,7 @@ export const Cell = props => {
     ) {
       cellId = cellId.replace(/edit-/g, '') || cellId;
       handleAppendChild(data, cellId);
+      forceUpdate();
     }
     if (event.target.getAttribute('name') === 'right-sibling-dropzone') {
       event.target.style.className = 'is-dragging';
