@@ -1,5 +1,5 @@
 import * as actionTypes from '../constant/index';
-import { toggleEstimation } from '../actions/estimation';
+import { toggleEstimation } from '../actions/toggleEstimation';
 
 const initialState = true;
 

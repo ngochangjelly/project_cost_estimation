@@ -142,3 +142,15 @@ button:focus {
 .estimation-row:hover + a {
   visibility: visible;
 }
+.primary-grey {
+  color: #768ba7;
+}
+.grey-border {
+  border-color: #768ba7;
+}
+.green-border {
+  border-color: #18c4a9;
+}
+.grey-border:hover {
+  border-color: #18c4a9;
+}

@@ -1,8 +1,9 @@
 import * as actionTypes from '../constant/index';
 
-export const toggleEstimation = isOpen => {
+export const arrangeRow = data => {
+  console.log(data);
   return {
-    type: actionTypes.TOGGLE_ESTIMATION,
-    isOpen: isOpen
+    type: actionTypes.ARRANGE_ROW,
+    data: data
   };
 };

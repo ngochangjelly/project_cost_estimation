@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FaDollarSign } from 'react-icons/fa';
-import { toggleEstimation } from '../actions/estimation';
+import { toggleEstimation } from '../actions/toggleEstimation';
 
 const Header = props => {
   const { toggleEstimation } = props;
