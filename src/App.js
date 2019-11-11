@@ -1,6 +1,7 @@
 import React from 'react';
 import TreeNode from './components/TreeNode';
 import Header from './components/Header';
+import { Estimation } from './components/Estimation/index';
 import { connect } from 'react-redux';
 let classNames = require('classnames');
 
@@ -19,7 +20,9 @@ const App = props => {
         <TreeNode store={props.store} />
       </div>
       {toggleEstimation && (
-        <div className="estimation-panel w-1/2 h-screen">ajksdhjahdk</div>
+        <div className="estimation-panel w-1/2 h-screen">
+          <Estimation />
+        </div>
       )}
     </div>
   );

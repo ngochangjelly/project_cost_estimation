@@ -107,10 +107,6 @@ body {
 .draggable {
   cursor: move;
 }
-.dropzone {
-  /* pointer-events: none; */
-  /* opacity: 0; */
-}
 .right-dz {
   margin-top: 48px;
 }
@@ -139,4 +135,10 @@ button:focus {
 /* pannel estimation */
 .estimation-panel {
   background-color: #4d607c;
+}
+.estimation-row:not(:hover) a {
+  visibility: hidden;
+}
+.estimation-row:hover + a {
+  visibility: visible;
 }
