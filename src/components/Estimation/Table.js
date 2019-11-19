@@ -53,12 +53,12 @@ class Table extends React.Component {
     return (
       <div id="estimationTable" className="w-full">
         <ReactDragListView {...this.dragProps}>
-          <div className="w-full flex">
+          <div className="w-full flex items-center h-16">
             {table.head.map((h, key) => (
               <div
                 className={classNames([
                   `w-1/${table.head.length}`,
-                  'primary-grey mb-6 font-semibold'
+                  'primary-grey font-semibold ml-4 text-white'
                 ])}
                 key={key}
               >
@@ -80,28 +80,28 @@ class Table extends React.Component {
                   </a>
                   <input
                     id={`input-${item.id}`}
-                    className="w-full h-full bg-transparent focus:outline-none"
+                    className="ml-3 w-full h-full bg-transparent focus:outline-none"
                     type="text"
                     placeholder={item.title}
                   />
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
-                    className="w-full h-full bg-transparent focus:outline-none focus:bg"
+                    className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={`$${item.rate}`}
                   />
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
-                    className="w-full h-full bg-transparent focus:outline-none focus:bg"
+                    className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={item.hours}
                   />
                 </div>
                 <div className="w-1/4 border grey-border flex justify-between items-center">
                   <input
-                    className="w-full h-full bg-transparent focus:outline-none focus:bg"
+                    className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={item.amount}
                   />
