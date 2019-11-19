@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#2f7fef',
-        button:'#768ba7',
+        button: '#768ba7',
+        mainred:'#ea5e5e'
       },
       margin: {
         '96': '24rem',

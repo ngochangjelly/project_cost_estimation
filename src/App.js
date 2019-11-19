@@ -13,11 +13,13 @@ const App = props => {
     >
       <div
         className={classNames([
-          toggleEstimation ? 'w-1/2 px-8 mt-24' : 'w-full px-8 mt-24'
+          toggleEstimation
+            ? 'w-1/2 px-8 mt-24 overflow-hidden '
+            : 'w-full px-8 mt-24'
         ])}
       >
         <Header />
-        <TreeNode store={props.store} />
+        <TreeNode toggleEstimation={toggleEstimation} store={props.store} />
       </div>
       {toggleEstimation && (
         <div className="estimation-panel w-1/2 h-screen">

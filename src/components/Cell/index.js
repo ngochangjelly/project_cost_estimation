@@ -165,19 +165,18 @@ export const Cell = props => {
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
-          {!root &&
-            (activeCell !== id && (
-              <div
-                className={[
-                  'absolute opacity-0 hover:opacity-100 flex justify-center w-12 h-32 top-0 right-0'
-                ]}
-                onClick={() => {
-                  handleAddSibling(props.cell.value);
-                }}
-              >
-                <Button name="add" className="absolute" />
-              </div>
-            ))}
+          {!root && activeCell !== id && (
+            <div
+              className={[
+                'absolute opacity-0 hover:opacity-100 flex justify-center w-12 h-32 top-0 right-0'
+              ]}
+              onClick={() => {
+                handleAddSibling(props.cell.value);
+              }}
+            >
+              <Button name="add" className="absolute" />
+            </div>
+          )}
           {!root && (
             <div
               className={classNames(

@@ -22,7 +22,7 @@ const calculateNodeWidth = id => {
 };
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
-  const { tree } = props;
+  const { tree, toggleEstimation } = props;
   const [activeCell, setActiveCell] = useState(null);
 
   const {
@@ -83,7 +83,7 @@ const TreeNode = props => {
     forceUpdate();
   };
   return (
-    <div>
+    <div className={[toggleEstimation && 'pointer-events-none']}>
       {/* render root cell */}
       <div className="flex justify-center">
         {tree?.value?.root && (
@@ -157,7 +157,4 @@ const mapStateToProps = state => {
   return { tree };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TreeNode);
+export default connect(mapStateToProps, mapDispatchToProps)(TreeNode);

@@ -1,17 +1,31 @@
-import * as estimation from '../constant/estimationTable';
 import * as actionTypes from '../constant';
+const uuidv4 = require('uuid/v4');
 
-const initialState = [
-  { title: '1', rate: 0, hours: 0, amount: 0 },
-  { title: '2', rate: 0, hours: 0, amount: 0 }
+let estimation = [
+  { id: 'asjahsada', title: '1', rate: 0, hours: 0, amount: 0 },
+  { id: 'wervsvsd', title: '2', rate: 0, hours: 0, amount: 0 }
 ];
+const initialState = estimation;
 
 export const estimationReducer = (state = initialState, action) => {
-  console.log(action);
   const { data } = action;
   switch (action.type) {
     case actionTypes.ARRANGE_ROW:
-      return data;
+      estimation = data;
+      return [...estimation];
+    case actionTypes.ADD_ROW:
+      const id = uuidv4();
+      const newRow = { id: id, title: '', rate: 0, hours: 0 };
+      estimation.map(e => {
+        if (e.id === data) {
+          estimation.push(newRow);
+          return;
+        }
+      });
+      return [...estimation];
+    case actionTypes.REMOVE_ROW:
+      estimation = estimation.filter(it => it.id !== data.id);
+      return [...estimation];
     default:
       return state;
   }
