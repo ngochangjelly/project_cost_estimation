@@ -9,3 +9,5 @@ export const TOGGLE_ESTIMATION = 'TOGGLE_ESTIMATION';
 export const ARRANGE_ROW = 'ARRANGE_ROW';
 export const ADD_ROW = 'ADD_ROW';
 export const REMOVE_ROW = 'REMOVE_ROW';
+export const EDIT_CELL = 'EDIT_CELL';
+export const TOGGLE_TICK = 'TOGGLE_TICK';

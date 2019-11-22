@@ -28,7 +28,8 @@ tree._addNode({
   name: 'Root',
   root: true,
   hasChildren: false,
-  children: []
+  children: [],
+  estimation: {}
 });
 const initialState = {
   tree

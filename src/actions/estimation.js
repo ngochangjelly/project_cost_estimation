@@ -19,3 +19,15 @@ export const removeRow = row => {
     data: row
   };
 };
+export const editCell = (cellId, name, value) => {
+  return {
+    type: actionTypes.EDIT_CELL,
+    data: { cellId: cellId, name: name, value: value }
+  };
+};
+export const toggleTick = cellId => {
+  return {
+    type: actionTypes.TOGGLE_TICK,
+    data: cellId
+  };
+};

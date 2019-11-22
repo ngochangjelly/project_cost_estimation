@@ -4,15 +4,24 @@ import { connect } from 'react-redux';
 import ReactDragListView from 'react-drag-listview/lib/index.js';
 import { FaEllipsisV } from 'react-icons/fa';
 import * as table from '../../constant/estimationTable';
-import { arrangeRow, addRow, removeRow } from '../../actions/estimation';
-let classNames = require('classnames');
+import Tick from './Tick';
+import { clone } from '../../utils/cloneObj';
+import {
+  arrangeRow,
+  addRow,
+  removeRow,
+  editCell,
+  toggleTick
+} from '../../actions/estimation';
 
+let classNames = require('classnames');
 class Table extends React.Component {
   constructor(props) {
     super(props);
     this.handleAddRow = this.handleAddRow.bind(this);
     this.state = {
-      parentId: ''
+      parentId: '',
+      reset: true
     };
     this.setState = this.setState.bind(this);
   }
@@ -31,22 +40,46 @@ class Table extends React.Component {
       .addEventListener('keypress', e => {
         var key = e.which || e.keyCode;
         if (key === 13) {
-          const id = e.target.getAttribute('id').replace(/input-/g, '');
+          const id = e.target.getAttribute('id').split('-')[1];
           this.handleAddRow(id);
         }
       });
   }
   onDragEnd = (fromIndex, toIndex) => {
-    const data = this.props.estimation;
-    const item = data.splice(fromIndex, 1)[0];
-    data.splice(toIndex, 0, item);
+    const data = clone(this.props.estimation);
+    const item1 = clone(data[fromIndex]);
+    const item2 = clone(data[toIndex]);
+    // const item = data.splice(fromIndex, 1)[0];
+    // data.splice(toIndex, 0, item);
+    data[fromIndex] = item2;
+    data[toIndex] = item1;
     this.props.dispatchArrangeRow(data);
+    this.setState({ reset: !this.state.reset });
   };
 
   dragProps = {
     onDragEnd: this.onDragEnd,
     nodeSelector: 'li',
     handleSelector: 'a'
+  };
+  handleInputChange = e => {
+    const { id, name, value } = e.target;
+    const prefix = id.split('-')[0];
+    const cellId = id.replace(`${prefix}-`, '');
+    this.props.dispatchEditCell(cellId, name, value);
+  };
+  handleToggleTick = (id, activated) => {
+    if (activated) {
+      if (
+        window.confirm(
+          'Are you sure you want to unlink this data row from sitemap?'
+        )
+      ) {
+        this.props.dispatchToggleTick(id);
+      }
+    } else {
+      this.props.dispatchToggleTick(id);
+    }
   };
 
   render() {
@@ -79,14 +112,32 @@ class Table extends React.Component {
                     </div>
                   </a>
                   <input
-                    id={`input-${item.id}`}
-                    className="ml-3 w-full h-full bg-transparent focus:outline-none"
+                    onChange={e => this.handleInputChange(e)}
+                    name="title"
+                    id={`title-${item.id}`}
+                    className="ml-3 w-full h-full h-full estimation-panel focus:outline-none"
                     type="text"
                     placeholder={item.title}
-                  />
+                  ></input>
+                  <div
+                    id={`tick-${item.id}`}
+                    className="cursor-pointer "
+                    onClick={() =>
+                      this.handleToggleTick(item.id, item.activated)
+                    }
+                  >
+                    <Tick
+                      activated={item.activated}
+                      index={index}
+                      color={item.color}
+                    />
+                  </div>
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
+                    id={`rate-${item.id}`}
+                    onChange={e => this.handleInputChange(e)}
+                    name="rate"
                     className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={`$${item.rate}`}
@@ -94,6 +145,9 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
+                    id={`hours-${item.id}`}
+                    onChange={e => this.handleInputChange(e)}
+                    name="hours"
                     className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={item.hours}
@@ -101,11 +155,14 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border flex justify-between items-center">
                   <input
+                    id={`amount-${item.id}`}
+                    onChange={e => this.handleInputChange(e)}
+                    name="amount"
                     className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
                     type="text"
                     placeholder={item.amount}
                   />
-                  <a>
+                  <a className="active:cursor-grabbing">
                     <FaEllipsisV />
                   </a>
                 </div>
@@ -134,6 +191,12 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchRemoveRow: row => {
     dispatch(removeRow(row));
+  },
+  dispatchEditCell: (cellId, name, value) => {
+    dispatch(editCell(cellId, name, value));
+  },
+  dispatchToggleTick: cellId => {
+    dispatch(toggleTick(cellId));
   }
 });
 const mapStateToProps = state => {

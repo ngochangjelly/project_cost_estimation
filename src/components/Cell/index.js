@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
-import { onClickInside } from '../../utils/detectElement';
 let classNames = require('classnames');
 
 // create your forceUpdate hook
@@ -12,8 +11,10 @@ function useForceUpdate() {
   return () => set(value => !value); // toggle the state to force render
 }
 export const Cell = props => {
+  console.log(props);
   const forceUpdate = useForceUpdate();
   const { name, id, root, position } = props.cell.value;
+  const { estimation } = props;
   const {
     handleAddChild,
     handleAddSibling,
@@ -164,6 +165,15 @@ export const Cell = props => {
               {id}
             </div>
           </div>
+          <div className="h-20 w-8 border main-border mt-4">
+            {estimation &&
+              estimation.map((e, key) => (
+                <div>
+                  {e.id}
+                  console.log(e)
+                </div>
+              ))}
+          </div>
           {/* only render "add sibling" button for cell not root*/}
           {!root && activeCell !== id && (
             <div
@@ -222,6 +232,9 @@ export const Cell = props => {
   );
 };
 
-const mapStateToProps = state => {};
+const mapStateToProps = state => {
+  const estimation = state.estimation;
+  return { estimation };
+};
 
 export default connect(mapStateToProps)(Cell);
