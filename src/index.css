@@ -154,3 +154,19 @@ button:focus {
 .grey-border:hover {
   border-color: #18c4a9;
 }
+.min-h-cell {
+  min-height: 32px;
+}
+.border-middle-cells {
+  border-bottom: 1px solid #768ba7;
+  border-left: 1px solid #768ba7;
+  border-right: 1px solid #768ba7;
+}
+.border-first-cell {
+  border: 1px solid #768ba7;
+}
+.border-last-cell {
+  border-bottom: 1px solid #768ba7;
+  border-left: 1px solid #768ba7;
+  border-right: 1px solid #768ba7;
+}

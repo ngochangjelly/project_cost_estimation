@@ -1,7 +1,7 @@
 import * as actionTypes from '../constant/index';
 import { toggleEstimation } from '../actions/toggleEstimation';
 
-const initialState = true;
+const initialState = false;
 
 export const toggleEstimationReducer = (state = initialState, action) => {
   const { isOpen } = action;

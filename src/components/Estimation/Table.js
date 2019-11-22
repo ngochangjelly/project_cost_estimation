@@ -25,13 +25,14 @@ class Table extends React.Component {
     };
     this.setState = this.setState.bind(this);
   }
+  TableContext = React.createContext();
   handleAddRow = id => {
     this.props.dispatchAddRow(id);
   };
   handleRemoveRow = row => {
     if (window.confirm('Confirm removing row?')) {
       row && this.props.dispatchRemoveRow(row);
-      this.forceUpdate();
+      // this.forceUpdate();
     }
   };
   componentDidMount() {
@@ -54,7 +55,6 @@ class Table extends React.Component {
     data[fromIndex] = item2;
     data[toIndex] = item1;
     this.props.dispatchArrangeRow(data);
-    this.setState({ reset: !this.state.reset });
   };
 
   dragProps = {

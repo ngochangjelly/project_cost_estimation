@@ -10,7 +10,7 @@ let estimation = [
     rate: 0,
     hours: 0,
     amount: 0,
-    activated: false,
+    activated: true,
     color: getColor(0)
   },
   {
@@ -19,7 +19,7 @@ let estimation = [
     rate: 0,
     hours: 0,
     amount: 0,
-    activated: false,
+    activated: true,
     color: getColor(1)
   }
 ];
@@ -39,7 +39,8 @@ export const estimationReducer = (state = initialState, action) => {
         title: '',
         rate: 0,
         hours: 0,
-        color: getColor(position)
+        color: getColor(position),
+        activated: true
       };
       let count = 0;
       estimation.map(e => {

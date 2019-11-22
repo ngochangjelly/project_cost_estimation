@@ -22,7 +22,7 @@ const App = props => {
         <TreeNode toggleEstimation={toggleEstimation} store={props.store} />
       </div>
       {toggleEstimation && (
-        <div className="estimation-panel w-1/2 h-screen">
+        <div className="estimation-panel w-1/2 min-h-screen overflow-scroll">
           <Estimation />
         </div>
       )}

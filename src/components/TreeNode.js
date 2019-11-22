@@ -23,6 +23,7 @@ const calculateNodeWidth = id => {
 const TreeNode = props => {
   const forceUpdate = useForceUpdate();
   const { tree, toggleEstimation } = props;
+  const { estimation } = props;
   const [activeCell, setActiveCell] = useState(null);
 
   const {
@@ -88,9 +89,11 @@ const TreeNode = props => {
       <div className="flex justify-center">
         {tree?.value?.root && (
           <Cell
+            toggleEstimation={toggleEstimation}
             activeCell={activeCell}
             setActiveCell={setActiveCell}
             cell={tree}
+            estimation={estimation}
             handleAddChild={handleAddChild}
             handleAddSibling={handleAddSibling}
             handleAppendSibling={handleAppendSibling}
@@ -106,6 +109,8 @@ const TreeNode = props => {
               className={classNames('flex flex-col items-center relative')}
             >
               <Cell
+                toggleEstimation={toggleEstimation}
+                estimation={estimation}
                 activeCell={activeCell}
                 setActiveCell={setActiveCell}
                 key={key}
@@ -154,7 +159,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => {
   const tree = state.tree.tree._root;
-  return { tree };
+  const estimation = state.estimation;
+  return { tree, estimation };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TreeNode);

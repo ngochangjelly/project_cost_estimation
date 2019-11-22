@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
@@ -11,10 +10,9 @@ function useForceUpdate() {
   return () => set(value => !value); // toggle the state to force render
 }
 export const Cell = props => {
-  console.log(props);
   const forceUpdate = useForceUpdate();
   const { name, id, root, position } = props.cell.value;
-  const { estimation } = props;
+  const { estimation, toggleEstimation } = props;
   const {
     handleAddChild,
     handleAddSibling,
@@ -119,7 +117,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 left-dz bg-red absolute left-0 top-0 dropzone bg-gray-100'
+                'w-24 min-h-cell left-dz bg-red absolute left-0 top-0 dropzone bg-gray-100'
               )}
               name="left-sibling-dropzone"
               id={`left-sibling-dropzone-${id}`}
@@ -162,17 +160,8 @@ export const Cell = props => {
               id={`edit-${id}`}
               onClick={e => handleActive(e)}
             >
-              {id}
+              {name}
             </div>
-          </div>
-          <div className="h-20 w-8 border main-border mt-4">
-            {estimation &&
-              estimation.map((e, key) => (
-                <div>
-                  {e.id}
-                  console.log(e)
-                </div>
-              ))}
           </div>
           {/* only render "add sibling" button for cell not root*/}
           {!root && activeCell !== id && (
@@ -199,6 +188,31 @@ export const Cell = props => {
               onDragLeave={e => handleDragLeave(e)}
             ></div>
           )}
+          {/* estimation vertical line */}
+          {toggleEstimation && (
+            <div className="flex flex-col h-auto items-center justify-center">
+              {estimation.map(
+                (e, key) =>
+                  e.activated && (
+                    <div
+                      key={key}
+                      className={classNames([
+                        'w-8 text-center h-6 px-2',
+                        key !== estimation.length - 1 &&
+                          key !== 0 &&
+                          'border-middle-cells',
+                        key === 0 && 'border-first-cell',
+                        key === estimation.length - 1 && 'border-last-cell'
+                      ])}
+                      style={{ color: e.activated ? e.color : '' }}
+                    >
+                      {e.hours}
+                    </div>
+                  )
+              )}
+            </div>
+          )}
+          {/* ends estimation vertical line */}
           {activeCell !== id && (
             <div
               className={[
@@ -232,9 +246,4 @@ export const Cell = props => {
   );
 };
 
-const mapStateToProps = state => {
-  const estimation = state.estimation;
-  return { estimation };
-};
-
-export default connect(mapStateToProps)(Cell);
+export default Cell;
