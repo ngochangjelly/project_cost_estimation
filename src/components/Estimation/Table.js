@@ -32,7 +32,6 @@ class Table extends React.Component {
   handleRemoveRow = row => {
     if (window.confirm('Confirm removing row?')) {
       row && this.props.dispatchRemoveRow(row);
-      // this.forceUpdate();
     }
   };
   componentDidMount() {
@@ -50,8 +49,6 @@ class Table extends React.Component {
     const data = clone(this.props.estimation);
     const item1 = clone(data[fromIndex]);
     const item2 = clone(data[toIndex]);
-    // const item = data.splice(fromIndex, 1)[0];
-    // data.splice(toIndex, 0, item);
     data[fromIndex] = item2;
     data[toIndex] = item1;
     this.props.dispatchArrangeRow(data);

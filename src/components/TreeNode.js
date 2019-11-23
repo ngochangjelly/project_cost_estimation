@@ -123,6 +123,8 @@ const TreeNode = props => {
               />
               {treeNode.children.length > 0 && (
                 <TreeNode
+                  toggleEstimation={toggleEstimation}
+                  estimation={estimation}
                   nodeWidth={calculateNodeWidth(treeNode.value.id)}
                   id={treeNode.value.id}
                   tree={treeNode}

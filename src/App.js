@@ -31,6 +31,7 @@ const App = props => {
 };
 
 const mapStateToProps = state => {
+  console.log('state in app component ', state);
   const { toggleEstimation } = state;
   return { toggleEstimation };
 };

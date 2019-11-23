@@ -190,7 +190,7 @@ export const Cell = props => {
           )}
           {/* estimation vertical line */}
           {toggleEstimation && (
-            <div className="flex flex-col h-auto items-center justify-center">
+            <div className="flex flex-col h-auto items-center justify-center absolute right-0">
               {estimation.map(
                 (e, key) =>
                   e.activated && (
