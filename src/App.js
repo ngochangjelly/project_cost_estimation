@@ -14,7 +14,7 @@ const App = props => {
       <div
         className={classNames([
           toggleEstimation
-            ? 'w-1/2 px-8 mt-24 overflow-hidden '
+            ? 'w-3/4 px-8 mt-24 overflow-hidden '
             : 'w-full px-8 mt-24'
         ])}
       >

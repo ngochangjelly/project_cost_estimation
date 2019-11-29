@@ -13,7 +13,7 @@ var classNames = require('classnames');
 
 //create your forceUpdate hook
 function useForceUpdate() {
-  const [value, set] = useState(true); //boolean state
+  const [_, set] = useState(true); //boolean state
   return () => set(value => !value); // toggle the state to force render
 }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import ReactDragListView from 'react-drag-listview/lib/index.js';
 import { FaEllipsisV } from 'react-icons/fa';
@@ -14,8 +13,23 @@ import {
   toggleTick
 } from '../../actions/estimation';
 import { keepToggle, closeToggle } from '../../actions/toggleEstimation';
-
 let classNames = require('classnames');
+
+const calculateSumMembers = (arr, key) => {
+  let sum;
+  if (Array.isArray(arr) && arr.length > 0 && key !== 'amount') {
+    sum = arr.reduce(function(cnt, o) {
+      return cnt + parseFloat(o[key]);
+    }, 0);
+  } else if (Array.isArray(arr) && arr.length > 0 && key === 'amount') {
+    sum = arr.reduce(function(cnt, o) {
+      return cnt + parseFloat(o.rate) * parseFloat(o.hours);
+    }, 0);
+  } else {
+    sum = 0;
+  }
+  return sum;
+};
 class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -115,11 +129,11 @@ class Table extends React.Component {
                     </div>
                   </a>
                   <input
-                    autocomplete="off"
+                    autoComplete="off"
                     onChange={e => this.handleInputChange(e)}
                     name="title"
                     id={`title-${item.id}`}
-                    className="ml-3 w-full h-full h-full estimation-panel focus:outline-none"
+                    className="ml-3 w-full max-h-full estimation-panel focus:outline-none"
                     type="text"
                     placeholder={item.title}
                   ></input>
@@ -139,36 +153,35 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
-                    autocomplete="off"
+                    autoComplete="off"
                     id={`rate-${item.id}`}
                     onChange={e => this.handleInputChange(e)}
                     name="rate"
                     className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
-                    type="text"
+                    type="number"
                     placeholder={`$${item.rate}`}
                   />
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
-                    autocomplete="off"
+                    autoComplete="off"
                     id={`hours-${item.id}`}
                     onChange={e => this.handleInputChange(e)}
                     name="hours"
                     className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
-                    type="text"
+                    type="number"
                     placeholder={item.hours}
                   />
                 </div>
                 <div className="w-1/4 border grey-border flex justify-between items-center">
-                  <input
-                    autocomplete="off"
+                  <div
                     id={`amount-${item.id}`}
-                    onChange={e => this.handleInputChange(e)}
                     name="amount"
-                    className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg"
-                    type="text"
-                    placeholder={item.amount}
-                  />
+                    className="ml-3 w-full h-full bg-transparent focus:outline-none focus:bg flex items-center"
+                  >
+                    {/* set default 0 to prevent no input */}${' '}
+                    {parseFloat(item.hours) * parseFloat(item.rate) || 0}
+                  </div>
                   <a className="active:cursor-grabbing">
                     <FaEllipsisV />
                   </a>
@@ -181,9 +194,32 @@ class Table extends React.Component {
           onClick={() => {
             this.handleAddRow();
           }}
-          className="primary-grey h-16 flex justify-start items-center border-b grey-border cursor-pointer"
+          className="primary-grey h-16 flex justify-start items-center border-b grey-border cursor-pointer ml-3"
         >
           Add row
+        </div>
+        <div className="h-16 flex justify-start items-center border-b-2 border-white ml-3 text-white font-semibold text-xl">
+          <div className="w-1/4"></div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r">
+            Subtotal
+          </div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3">
+            {calculateSumMembers(this.props.estimation, 'hours')}
+          </div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3">
+            {calculateSumMembers(this.props.estimation, 'amount')}
+          </div>
+        </div>
+        <div className="h-16 flex justify-start items-center border-b grey-border ml-3 text-white font-semibold text-xl">
+          <div className="w-1/4"></div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r">
+            Total
+          </div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r"></div>
+          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3">
+            {' '}
+            {calculateSumMembers(this.props.estimation, 'amount')}
+          </div>
         </div>
       </div>
     );
