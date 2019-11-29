@@ -9,11 +9,17 @@ const clear = () => {
 const update = tree => {
   window.localStorage.setItem('tree', JSON.stringify(tree));
 };
-const get = () => {
-  return JSON.parse(window.localStorage.getItem('tree'));
+const get = key => {
+  return JSON.parse(
+    JSON.parse(window.localStorage.getItem('persist:root'))[key]
+  );
 };
-const check = () => {
-  return window.localStorage.getItem('tree');
+const check = key => {
+  if (window.localStorage.getItem('persist:root')) {
+    return !JSON.parse(window.localStorage.getItem('persist:root'))[key];
+  } else {
+    return false;
+  }
 };
 module.exports = {
   set,

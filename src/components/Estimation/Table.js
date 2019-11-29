@@ -13,6 +13,7 @@ import {
   editCell,
   toggleTick
 } from '../../actions/estimation';
+import { keepToggle, closeToggle } from '../../actions/toggleEstimation';
 
 let classNames = require('classnames');
 class Table extends React.Component {
@@ -25,14 +26,16 @@ class Table extends React.Component {
     };
     this.setState = this.setState.bind(this);
   }
-  TableContext = React.createContext();
+
   handleAddRow = id => {
     this.props.dispatchAddRow(id);
+    this.props.dispatchKeepToggle();
   };
   handleRemoveRow = row => {
     if (window.confirm('Confirm removing row?')) {
       row && this.props.dispatchRemoveRow(row);
     }
+    this.props.dispatchKeepToggle();
   };
   componentDidMount() {
     document
@@ -52,6 +55,7 @@ class Table extends React.Component {
     data[fromIndex] = item2;
     data[toIndex] = item1;
     this.props.dispatchArrangeRow(data);
+    this.props.dispatchKeepToggle();
   };
 
   dragProps = {
@@ -64,6 +68,7 @@ class Table extends React.Component {
     const prefix = id.split('-')[0];
     const cellId = id.replace(`${prefix}-`, '');
     this.props.dispatchEditCell(cellId, name, value);
+    this.props.dispatchKeepToggle();
   };
   handleToggleTick = (id, activated) => {
     if (activated) {
@@ -77,6 +82,7 @@ class Table extends React.Component {
     } else {
       this.props.dispatchToggleTick(id);
     }
+    this.props.dispatchKeepToggle();
   };
 
   render() {
@@ -101,7 +107,7 @@ class Table extends React.Component {
               <li className="text-white flex estimation-row h-16" key={index}>
                 <div className="flex items-center w-1/4 border grey-border">
                   <a
-                    className="-ml-3 mr-3 cursor-pointer"
+                    className="-ml-3 mr-3 cursor-pointer absolute z-50"
                     onClick={() => this.handleRemoveRow(item)}
                   >
                     <div className="bg-red-700 rounded-full w-6 h-6 text-white text-xl flex justify-center items-center">
@@ -194,6 +200,12 @@ const mapDispatchToProps = dispatch => ({
   },
   dispatchToggleTick: cellId => {
     dispatch(toggleTick(cellId));
+  },
+  dispatchKeepToggle: () => {
+    dispatch(keepToggle());
+  },
+  dispatchCloseToggle: () => {
+    dispatch(closeToggle());
   }
 });
 const mapStateToProps = state => {

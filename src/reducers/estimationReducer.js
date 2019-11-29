@@ -1,10 +1,12 @@
 import * as actionTypes from '../constant';
 import { getColor } from '../utils/getColor';
+import * as localStorage from '../utils/localStorage';
 const uuidv4 = require('uuid/v4');
 
-let estimation = [
+const ESTIMATION = 'estimation';
+let defaultValue = [
   {
-    id: 'asjahsada',
+    id: 'root',
     title: '1',
     order: 0,
     rate: 0,
@@ -12,28 +14,25 @@ let estimation = [
     amount: 0,
     activated: true,
     color: getColor(0)
-  },
-  {
-    id: 'wervsvsd',
-    title: '2',
-    rate: 0,
-    hours: 0,
-    amount: 0,
-    activated: true,
-    color: getColor(1)
   }
 ];
-const initialState = estimation;
+let initialState;
+if (localStorage.check(ESTIMATION)) {
+  initialState = localStorage.get(ESTIMATION);
+} else {
+  initialState = defaultValue;
+}
 
 export const estimationReducer = (state = initialState, action) => {
   const { data } = action;
+  let estimation;
   switch (action.type) {
     case actionTypes.ARRANGE_ROW:
-      estimation = data;
+      estimation = data.estimation;
       return [...estimation];
     case actionTypes.ADD_ROW:
       const id = uuidv4();
-      const position = estimation.length;
+      var position = state.length;
       const newRow = {
         id: id,
         title: '',
@@ -43,34 +42,34 @@ export const estimationReducer = (state = initialState, action) => {
         activated: true
       };
       let count = 0;
-      estimation.map(e => {
+      state.map(e => {
         if (e.id === data) {
-          estimation.push(newRow);
+          state.push(newRow);
           count = 1;
         }
       });
       if (count === 0) {
-        estimation.push(newRow);
+        state.push(newRow);
       }
-      return [...estimation];
+      return [...state];
     case actionTypes.REMOVE_ROW:
-      estimation = estimation.filter(it => it.id !== data.id);
-      return [...estimation];
+      state = state.filter(it => it.id !== data.id);
+      return [...state];
     case actionTypes.EDIT_CELL:
       let { cellId, value, name } = data;
-      estimation.map(e => {
+      state.map(e => {
         if (e.id === cellId) {
           e[`${name}`] = value;
         }
       });
-      return [...estimation];
+      return [...state];
     case actionTypes.TOGGLE_TICK:
-      estimation.map(e => {
+      state.map(e => {
         if (e.id === data) {
           e.activated = !e.activated;
         }
       });
-      return [...estimation];
+      return [...state];
     default:
       return state;
   }

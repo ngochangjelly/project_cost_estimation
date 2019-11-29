@@ -135,6 +135,8 @@ button:focus {
 /* pannel estimation */
 .estimation-panel {
   background-color: #4d607c;
+  /* position: absolute; */
+  /* z-index: 100; */
 }
 .estimation-row:not(:hover) a {
   visibility: hidden;

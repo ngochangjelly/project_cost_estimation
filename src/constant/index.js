@@ -11,3 +11,5 @@ export const ADD_ROW = 'ADD_ROW';
 export const REMOVE_ROW = 'REMOVE_ROW';
 export const EDIT_CELL = 'EDIT_CELL';
 export const TOGGLE_TICK = 'TOGGLE_TICK';
+export const KEEP_TOGGLE = 'KEEP_TOGGLE';
+export const CLOSE_TOGGLE = 'CLOSE_TOGGLE';
