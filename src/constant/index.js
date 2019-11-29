@@ -1,4 +1,5 @@
 export const main = 'MAIN';
+export const ESTIMATION = 'estimation';
 export const ADD_CHILD = 'ADD_CHILD';
 export const APPEND_CHILD = 'APPEND_CHILD';
 export const ADD_SIBLING = 'ADD_SIBLING';

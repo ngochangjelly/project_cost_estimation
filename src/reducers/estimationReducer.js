@@ -1,9 +1,9 @@
 import * as actionTypes from '../constant';
 import { getColor } from '../utils/getColor';
 import * as localStorage from '../utils/localStorage';
+import * as constant from '../constant';
 const uuidv4 = require('uuid/v4');
 
-const ESTIMATION = 'estimation';
 let defaultValue = [
   {
     id: 'root',
@@ -17,8 +17,8 @@ let defaultValue = [
   }
 ];
 let initialState;
-if (localStorage.check(ESTIMATION)) {
-  initialState = localStorage.get(ESTIMATION);
+if (localStorage.check(constant.ESTIMATION)) {
+  initialState = localStorage.get(constant.ESTIMATION);
 } else {
   initialState = defaultValue;
 }
@@ -28,7 +28,7 @@ export const estimationReducer = (state = initialState, action) => {
   let estimation;
   switch (action.type) {
     case actionTypes.ARRANGE_ROW:
-      estimation = data.estimation;
+      estimation = data;
       return [...estimation];
     case actionTypes.ADD_ROW:
       const id = uuidv4();

@@ -12,10 +12,6 @@ body {
 .cell-width {
   width: 450px;
 }
-/* .cell-width:hover {
-  transform: translateX(40px);
-  -webkit-transform: translateX(40px);
-} */
 .main-bg {
   background-color: #2f7fef;
 }
@@ -135,8 +131,6 @@ button:focus {
 /* pannel estimation */
 .estimation-panel {
   background-color: #4d607c;
-  /* position: absolute; */
-  /* z-index: 100; */
 }
 .estimation-row:not(:hover) a {
   visibility: hidden;
@@ -156,6 +150,11 @@ button:focus {
 .grey-border:hover {
   border-color: #18c4a9;
 }
+/* handle input */
+input:focus::placeholder {
+  color: transparent;
+}
+
 .min-h-cell {
   min-height: 32px;
 }

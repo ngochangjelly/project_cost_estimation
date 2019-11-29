@@ -98,7 +98,7 @@ class Table extends React.Component {
                 ])}
                 key={key}
               >
-                {h}
+                {h.name}
               </div>
             ))}
           </div>
@@ -115,6 +115,7 @@ class Table extends React.Component {
                     </div>
                   </a>
                   <input
+                    autocomplete="off"
                     onChange={e => this.handleInputChange(e)}
                     name="title"
                     id={`title-${item.id}`}
@@ -138,6 +139,7 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
+                    autocomplete="off"
                     id={`rate-${item.id}`}
                     onChange={e => this.handleInputChange(e)}
                     name="rate"
@@ -148,6 +150,7 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border">
                   <input
+                    autocomplete="off"
                     id={`hours-${item.id}`}
                     onChange={e => this.handleInputChange(e)}
                     name="hours"
@@ -158,6 +161,7 @@ class Table extends React.Component {
                 </div>
                 <div className="w-1/4 border grey-border flex justify-between items-center">
                   <input
+                    autocomplete="off"
                     id={`amount-${item.id}`}
                     onChange={e => this.handleInputChange(e)}
                     name="amount"
