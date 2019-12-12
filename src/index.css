@@ -105,9 +105,15 @@ body {
 }
 .right-dz {
   margin-top: 48px;
+  height:128px;
+  width:120px
+
 }
 .left-dz {
   margin-top: 48px;
+  margin-top: 48px;
+  height:128px;
+  width:120px
 }
 .on-right-dragged-over {
   -webkit-transform: translate(-40px, -1px);
@@ -154,7 +160,16 @@ button:focus {
 input:focus::placeholder {
   color: transparent;
 }
-
+textarea {
+  resize: none;
+  overflow: scroll;
+}
+textarea:focus {
+  outline: none;
+  display: block;
+  box-sizing: padding-box;
+  overflow: hidden;
+}
 .min-h-cell {
   min-height: 32px;
 }

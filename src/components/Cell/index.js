@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
@@ -21,9 +21,11 @@ export const Cell = props => {
     handleAppendSibling
   } = props;
   const { activeCell, setActiveCell } = props;
+  console.log('active cell in cell ',activeCell);
   const [isDragging, setIsDragging] = useState(false);
   const [onHover, setOnHover] = useState(null);
   const inputRef = React.createRef();
+  const cellRef = React.createRef(null)
   const dragStart = (event, cell) => {
     setIsDragging(true);
     event.dataTransfer.setData('cell', JSON.stringify(cell));
@@ -50,6 +52,22 @@ export const Cell = props => {
       setOnHover(null);
     }
   };
+
+  const handleClickEvent = useCallback(
+    (event) => {
+    const { target } = event
+      if (cellRef && cellRef.current && id===activeCell && !cellRef.current.contains(target)) {
+      setActiveCell(null)
+    }
+    },
+    [activeCell, cellRef, id, setActiveCell],
+  )
+  useEffect(() => {
+  document.addEventListener('click', handleClickEvent)
+  return () => {
+    document.removeEventListener('click', handleClickEvent)
+  };
+}, [handleClickEvent])
 
   const drop = (event, data) => {
     event.preventDefault();
@@ -88,14 +106,11 @@ export const Cell = props => {
   const handleActive = e => {
     const currentId = e.target.getAttribute('id');
     if (currentId.includes(id)) {
-      if (!activeCell) {
+      if (!activeCell || activeCell !== id) {
         setActiveCell(id);
       }
       if (activeCell) {
         setActiveCell(null);
-      }
-      if (activeCell !== id) {
-        setActiveCell(id);
       }
     }
   };
@@ -117,7 +132,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'w-24 min-h-cell left-dz bg-red absolute left-0 top-0 dropzone bg-gray-100'
+                'left-dz bg-red absolute left-0 top-0 dropzone bg-transparent'
               )}
               name="left-sibling-dropzone"
               id={`left-sibling-dropzone-${id}`}
@@ -127,10 +142,11 @@ export const Cell = props => {
           )}
           <div
             id={id}
+            ref={cellRef}
             name="child-dropzone"
             className={classNames(
-              'border main-border rounded-lg w-56 h-24',
-              !root && 'absolute above-line',
+              'border main-border rounded-lg w-56',
+              !root && 'absolute above-line min-h-cell',
               props.cell.children.length > 0 && 'absolute below-line'
             )}
             onDragStart={e => dragStart(e, props.cell)}
@@ -160,26 +176,32 @@ export const Cell = props => {
               id={`edit-${id}`}
               onClick={e => handleActive(e)}
             >
-              {name}
+              <textarea
+                style={{width:'100%'}}
+                rows="2"
+                data-min-rows="2"
+                id={`textarea-${id}`}
+                placeholder={name}
+              ></textarea>
             </div>
           </div>
           {/* only render "add sibling" button for cell not root*/}
           {!root && activeCell !== id && (
             <div
               className={[
-                'absolute opacity-0 hover:opacity-100 flex justify-center w-12 h-32 top-0 right-0'
+                'absolute opacity-0 hover:opacity-100 flex justify-center w-24 h-32 top-0 right-0'
               ]}
               onClick={() => {
                 handleAddSibling(props.cell.value);
               }}
             >
-              <Button name="add" className="absolute" />
+              <Button name="add" className=" z-100" />
             </div>
           )}
           {!root && (
             <div
               className={classNames(
-                'w-24 h-32 right-dz bg-red absolute top-0 right-0 dropzone bg-gray-100'
+                'right-dz bg-red absolute top-0 right-0 dropzone bg-transparent'
               )}
               name="right-sibling-dropzone"
               id={`right-sibling-dropzone-${id}`}

@@ -198,15 +198,15 @@ class Table extends React.Component {
         >
           Add row
         </div>
-        <div className="h-16 flex justify-start items-center border-b-2 border-white ml-3 text-white font-semibold text-xl">
+        <div className="h-16 flex justify-start items-center ml-3 text-white font-semibold text-xl">
           <div className="w-1/4"></div>
-          <div className="w-1/4 h-full flex items-center grey-border border-r">
+          <div className="w-1/4 h-full flex items-center grey-border border-r border-b-2 border-white">
             Subtotal
           </div>
-          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3">
+          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3 border-b-2 border-white">
             {calculateSumMembers(this.props.estimation, 'hours')}
           </div>
-          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3">
+          <div className="w-1/4 h-full flex items-center grey-border border-r pl-3 border-b-2 border-white">
             {calculateSumMembers(this.props.estimation, 'amount')}
           </div>
         </div>

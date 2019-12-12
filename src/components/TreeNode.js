@@ -91,7 +91,7 @@ const TreeNode = props => {
           <Cell
             toggleEstimation={toggleEstimation}
             activeCell={activeCell}
-            setActiveCell={setActiveCell}
+            setActiveCell={(obj)=>setActiveCell(obj)}
             cell={tree}
             estimation={estimation}
             handleAddChild={handleAddChild}
@@ -109,17 +109,17 @@ const TreeNode = props => {
               className={classNames('flex flex-col items-center relative')}
             >
               <Cell
-                toggleEstimation={toggleEstimation}
-                estimation={estimation}
-                activeCell={activeCell}
-                setActiveCell={setActiveCell}
-                key={key}
-                cell={treeNode}
-                handleAddChild={handleAddChild}
-                handleAppendChild={handleAppendChild}
-                handleAddSibling={handleAddSibling}
-                handleAppendSibling={handleAppendSibling}
-                handleRemoveCell={handleRemoveCell}
+                  toggleEstimation={toggleEstimation}
+                  estimation={estimation}
+                  activeCell={activeCell}
+                  setActiveCell={(obj)=>setActiveCell(obj)}
+                  key={key}
+                  cell={treeNode}
+                  handleAddChild={handleAddChild}
+                  handleAppendChild={handleAppendChild}
+                  handleAddSibling={handleAddSibling}
+                  handleAppendSibling={handleAppendSibling}
+                  handleRemoveCell={handleRemoveCell}
               />
               {treeNode.children.length > 0 && (
                 <TreeNode

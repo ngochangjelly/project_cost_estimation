@@ -5,7 +5,6 @@ export const Input = ({ id, title, className, type, placeholder }) => {
   const handleClick = e => {
     if (!node.current.contains(e.target)) {
       console.log('outside');
-
       return;
     }
   };
