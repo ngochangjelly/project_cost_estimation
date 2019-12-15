@@ -21,9 +21,9 @@ export const Cell = props => {
     handleAppendSibling
   } = props;
   const { activeCell, setActiveCell } = props;
-  console.log('active cell in cell ',activeCell);
   const [isDragging, setIsDragging] = useState(false);
   const [onHover, setOnHover] = useState(null);
+  console.log(onHover);
   const inputRef = React.createRef();
   const cellRef = React.createRef(null)
   const dragStart = (event, cell) => {
@@ -60,7 +60,8 @@ export const Cell = props => {
       setActiveCell(null)
     }
     },
-    [activeCell, cellRef, id, setActiveCell],
+    // eslint-disable-next-line
+    []
   )
   useEffect(() => {
   document.addEventListener('click', handleClickEvent)
@@ -81,7 +82,7 @@ export const Cell = props => {
       dropCell.getAttribute('name') !== 'right-sibling-dropzone' &&
       dropCell.getAttribute('name') !== 'left-sibling-dropzone'
     ) {
-      cellId = cellId.replace(/edit-/g, '') || cellId;
+      cellId = cellId.replace(/textarea-|edit-/g, '') || cellId;
       handleAppendChild(data, cellId);
       forceUpdate();
     }
@@ -120,7 +121,7 @@ export const Cell = props => {
       <div className={classNames('relative')}>
         <div
           className={classNames(
-            'cell cell-width mt-12 h-32 flex justify-center relative',
+            'cell cell-width mt-12 mb-2 h-32 flex justify-center relative',
             onHover?.includes(id) &&
               onHover?.includes('right') &&
               'on-right-dragged-over',
@@ -189,7 +190,7 @@ export const Cell = props => {
           {!root && activeCell !== id && (
             <div
               className={[
-                'absolute opacity-0 hover:opacity-100 flex justify-center w-24 h-32 top-0 right-0'
+                'absolute opacity-0 hover:opacity-100 flex justify-start w-24 h-32 top-0 right-0'
               ]}
               onClick={() => {
                 handleAddSibling(props.cell.value);

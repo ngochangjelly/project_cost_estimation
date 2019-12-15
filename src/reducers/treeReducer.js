@@ -55,7 +55,9 @@ export const treeReducer = (state = initialState, action) => {
         parentNode.children[0].value.position = positionTypes.isFirstChild;
       }
       //toggle parent hasChildren field to true
-      parentNode.value.hasChildren = true;
+      if (parentNode) {
+        parentNode.value.hasChildren = true;
+      }
       tree._addNode(cell, parentId);
       return { ...state, tree };
 
@@ -88,8 +90,6 @@ export const treeReducer = (state = initialState, action) => {
             positionTypes.isLastChild;
         }
       }
-      //end of position handling
-      console.log(tree);
       return { ...state, tree };
 
     case actionTypes.ADD_SIBLING:

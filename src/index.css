@@ -162,7 +162,7 @@ input:focus::placeholder {
 }
 textarea {
   resize: none;
-  overflow: scroll;
+  background-color: transparent;
 }
 textarea:focus {
   outline: none;
