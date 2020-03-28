@@ -84,7 +84,7 @@ const TreeNode = props => {
     forceUpdate();
   };
   return (
-    <div className={[toggleEstimation && 'pointer-events-none']}>
+    <div className={classNames(['flex flex-col flex-wrap',!toggleEstimation && 'pointer-events-none'])}>
       {/* render root cell */}
       <div className="flex justify-center">
         {tree?.value?.root && (

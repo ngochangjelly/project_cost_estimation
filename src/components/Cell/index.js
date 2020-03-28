@@ -23,9 +23,8 @@ export const Cell = props => {
   const { activeCell, setActiveCell } = props;
   const [isDragging, setIsDragging] = useState(false);
   const [onHover, setOnHover] = useState(null);
-  console.log(onHover);
   const inputRef = React.createRef();
-  const cellRef = React.createRef(null)
+  const cellRef = React.createRef(null);
   const dragStart = (event, cell) => {
     setIsDragging(true);
     event.dataTransfer.setData('cell', JSON.stringify(cell));
@@ -54,21 +53,26 @@ export const Cell = props => {
   };
 
   const handleClickEvent = useCallback(
-    (event) => {
-    const { target } = event
-      if (cellRef && cellRef.current && id===activeCell && !cellRef.current.contains(target)) {
-      setActiveCell(null)
-    }
+    event => {
+      const { target } = event;
+      if (
+        cellRef &&
+        cellRef.current &&
+        id === activeCell &&
+        !cellRef.current.contains(target)
+      ) {
+        setActiveCell(null);
+      }
     },
     // eslint-disable-next-line
     []
-  )
+  );
   useEffect(() => {
-  document.addEventListener('click', handleClickEvent)
-  return () => {
-    document.removeEventListener('click', handleClickEvent)
-  };
-}, [handleClickEvent])
+    document.addEventListener('click', handleClickEvent);
+    return () => {
+      document.removeEventListener('click', handleClickEvent);
+    };
+  }, [handleClickEvent]);
 
   const drop = (event, data) => {
     event.preventDefault();
@@ -146,7 +150,7 @@ export const Cell = props => {
             ref={cellRef}
             name="child-dropzone"
             className={classNames(
-              'border main-border rounded-lg w-56',
+              'border main-border rounded-lg w-48',
               !root && 'absolute above-line min-h-cell',
               props.cell.children.length > 0 && 'absolute below-line'
             )}
@@ -178,7 +182,7 @@ export const Cell = props => {
               onClick={e => handleActive(e)}
             >
               <textarea
-                style={{width:'100%'}}
+                style={{ width: '100%' }}
                 rows="2"
                 data-min-rows="2"
                 id={`textarea-${id}`}
@@ -190,7 +194,7 @@ export const Cell = props => {
           {!root && activeCell !== id && (
             <div
               className={[
-                'absolute opacity-0 hover:opacity-100 flex justify-start w-24 h-32 top-0 right-0'
+                'absolute opacity-0 hover:opacity-100 flex justify-start items-center w-24 h-32 top-0 right-0'
               ]}
               onClick={() => {
                 handleAddSibling(props.cell.value);
@@ -213,7 +217,12 @@ export const Cell = props => {
           )}
           {/* estimation vertical line */}
           {toggleEstimation && (
-            <div className="flex flex-col h-auto items-center justify-center absolute right-0">
+            <div
+              className={
+                'flex flex-col h-auto items-center justify-center absolute'
+              }
+              style={{ right: '80px' }}
+            >
               {estimation.map(
                 (e, key) =>
                   e.activated && (
@@ -239,7 +248,7 @@ export const Cell = props => {
           {activeCell !== id && (
             <div
               className={[
-                'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-56 h-8'
+                'absolute bottom-0 opacity-0 hover:opacity-100 flex justify-center w-48 h-8'
               ]}
               onClick={() => {
                 handleAddChild(props.cell.value);
@@ -253,7 +262,7 @@ export const Cell = props => {
             <div
               id={`remove${id}`}
               className={classNames(
-                'absolute bottom-0 right-0 flex justify-center w-56 h-8',
+                'absolute bottom-0 right-0 flex justify-center w-48 h-8',
                 activeCell === id ? 'opacity-1' : 'opacity-0'
               )}
               onClick={() => {

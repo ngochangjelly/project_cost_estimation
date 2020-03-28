@@ -6,13 +6,13 @@ export default function Button({ name, className, style }) {
     case 'add':
       return (
         <IoIosAddCircle
-          className="w-12 h-12 text-white z-100"
+          className="w-8 h-8 text-white z-100 rounded-full bg-white"
           style={{ color: '#2f7fef' }}
         />
       );
     case 'minus':
       return (
-        <IoIosRemoveCircle className="w-12 h-12" style={{ color: 'red' }} />
+        <IoIosRemoveCircle className="w-8 h-8 rounded-full bg-white" style={{ color: 'red' }} />
       );
     default:
       return null;

@@ -59,7 +59,7 @@ export const treeReducer = (state = initialState, action) => {
         parentNode.value.hasChildren = true;
       }
       tree._addNode(cell, parentId);
-      return { ...state, tree };
+      return {...state, tree}
 
     case actionTypes.APPEND_CHILD:
       cellPos = cell.value.position;
