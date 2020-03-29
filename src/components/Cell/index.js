@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { IoIosMore } from 'react-icons/io';
 import Button from '../Button';
 import { getConnectLine } from '../../utils/getPosition';
+import useOnClickOutside from '../../hooks/onClickOutside';
 let classNames = require('classnames');
 
 // create your forceUpdate hook
@@ -18,13 +19,20 @@ export const Cell = props => {
     handleAddSibling,
     handleRemoveCell,
     handleAppendChild,
-    handleAppendSibling
+    handleAppendSibling,
+    handleActive
   } = props;
   const { activeCell, setActiveCell } = props;
+  const isActiveCell = useMemo(() => {
+    if (activeCell && (document.getElementById(id).contains(document.getElementById(activeCell)) || activeCell === id)) {
+      return true
+    }
+    return false
+  },[activeCell, id])
+    console.log("isActiveCell -> isActiveCell", isActiveCell, ' ', id)
   const [isDragging, setIsDragging] = useState(false);
   const [onHover, setOnHover] = useState(null);
-  const inputRef = React.createRef();
-  const cellRef = React.createRef(null);
+
   const dragStart = (event, cell) => {
     setIsDragging(true);
     event.dataTransfer.setData('cell', JSON.stringify(cell));
@@ -51,28 +59,6 @@ export const Cell = props => {
       setOnHover(null);
     }
   };
-
-  const handleClickEvent = useCallback(
-    event => {
-      const { target } = event;
-      if (
-        cellRef &&
-        cellRef.current &&
-        id === activeCell &&
-        !cellRef.current.contains(target)
-      ) {
-        setActiveCell(null);
-      }
-    },
-    // eslint-disable-next-line
-    []
-  );
-  useEffect(() => {
-    document.addEventListener('click', handleClickEvent);
-    return () => {
-      document.removeEventListener('click', handleClickEvent);
-    };
-  }, [handleClickEvent]);
 
   const drop = (event, data) => {
     event.preventDefault();
@@ -108,21 +94,15 @@ export const Cell = props => {
     setOnHover(null);
     forceUpdate();
   };
-  const handleActive = e => {
-    const currentId = e.target.getAttribute('id');
-    if (currentId.includes(id)) {
-      if (!activeCell || activeCell !== id) {
-        setActiveCell(id);
-      }
-      if (activeCell) {
-        setActiveCell(null);
-      }
-    }
-  };
+
+  const cellRef = useRef(null);
+  useOnClickOutside(cellRef, (e) => {
+    handleActive(e)
+  });
 
   return (
     <div className={classNames(getConnectLine(position))}>
-      <div className={classNames('relative')}>
+      <div className={classNames('relative')} ref={cellRef}>
         <div
           className={classNames(
             'cell cell-width mt-12 mb-2 h-32 flex justify-center relative',
@@ -147,13 +127,13 @@ export const Cell = props => {
           )}
           <div
             id={id}
-            ref={cellRef}
             name="child-dropzone"
             className={classNames(
               'border main-border rounded-lg w-48',
               !root && 'absolute above-line min-h-cell',
               props.cell.children.length > 0 && 'absolute below-line'
             )}
+            onClick={(e)=>handleActive(e)}
             onDragStart={e => dragStart(e, props.cell)}
             draggable={!root && 'true'}
             onDrop={e => {
@@ -165,7 +145,7 @@ export const Cell = props => {
               className={classNames(
                 'flex items-center h-4 w-full main-border-bottom',
                 !root && 'draggable',
-                activeCell === id && 'main-bg'
+                isActiveCell && 'main-bg'
               )}
             >
               <IoIosMore
@@ -176,10 +156,8 @@ export const Cell = props => {
               />
             </div>
             <div
-              ref={inputRef}
               className="relative px-2 py-2 text-xl font-semibold main-text-color"
               id={`edit-${id}`}
-              onClick={e => handleActive(e)}
             >
               <textarea
                 style={{ width: '100%' }}
@@ -194,7 +172,7 @@ export const Cell = props => {
           {!root && activeCell !== id && (
             <div
               className={[
-                'absolute opacity-0 hover:opacity-100 flex justify-start items-center w-24 h-32 top-0 right-0'
+                'absolute opacity-0 hover:opacity-100 flex justify-start items-center w-24 h-32 top-0 right-0 z-20 cursor-pointer'
               ]}
               onClick={() => {
                 handleAddSibling(props.cell.value);
@@ -206,7 +184,7 @@ export const Cell = props => {
           {!root && (
             <div
               className={classNames(
-                'right-dz bg-red absolute top-0 right-0 dropzone bg-transparent'
+                'right-dz bg-red absolute top-0 right-0 dropzone bg-transparent z-40'
               )}
               name="right-sibling-dropzone"
               id={`right-sibling-dropzone-${id}`}

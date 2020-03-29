@@ -5,8 +5,12 @@
   "homepage": "https://ngochangjelly.github.io/project_cost_estimation",
   "dependencies": {
     "@babel/preset-react": "^7.9.4",
+    "@types/html2canvas": "0.0.35",
+    "@types/jspdf": "^1.3.3",
     "classnames": "^2.2.6",
     "gh-pages": "^2.2.0",
+    "html2canvas": "^1.0.0-rc.5",
+    "jspdf": "^1.5.3",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
